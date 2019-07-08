@@ -1,0 +1,30 @@
+{
+  "name": "leadvertex/plugin-scheme",
+  "description": "LeadVertex plugins scheme component",
+  "type": "library",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Timur Kasumov aka XAKEPEHOK",
+      "email": "support@leadvertex.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Leadvertex\\Plugin\\Scheme\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.1.0",
+    "ext-json": "*"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Leadvertex\\Plugin\\Scheme\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.1"
+    }
+  }
