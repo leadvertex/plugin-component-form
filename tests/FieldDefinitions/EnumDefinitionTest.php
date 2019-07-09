@@ -72,24 +72,19 @@ class EnumDefinitionTest extends TestCase
     public function testToArray()
     {
         $expected = [
+            'name' => 'Field name',
             'definition' => 'enum',
             'label' => $this->label->toArray(),
             'description' => $this->description->toArray(),
             'default' => $this->default,
             'required' => $this->required,
             'enum' => [
-                'jan' => [
-                    'en' => 'January',
-                    'ru' => 'Январь',
-                ],
-                'feb' => [
-                    'en' => 'February',
-                    'ru' => 'Февраль',
-                ],
+                'jan' => $this->enum['jan']->toArray(),
+                'feb' => $this->enum['feb']->toArray(),
             ],
         ];
 
-        $this->assertEquals($expected, $this->enumDefinition->toArray());
+        $this->assertEquals($expected, $this->enumDefinition->toArray('Field name'));
     }
 
     public function testDefinition()

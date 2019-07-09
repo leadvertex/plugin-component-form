@@ -128,7 +128,7 @@ class SchemeTest extends TestCase
             'languages' => ['en', 'ru'],
         ];
         foreach ($this->fieldGroups as $groupName => $fieldGroup) {
-            $expected['groups'][$groupName] = $fieldGroup->toArray();
+            $expected['groups'][$groupName] = $fieldGroup->toArray($groupName);
         }
 
         $this->assertEquals($expected, $this->scheme->toArray());

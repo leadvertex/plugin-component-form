@@ -46,9 +46,9 @@ class EnumDefinition extends FieldDefinition
         return 'enum';
     }
 
-    public function toArray(): array
+    public function toArray(string $name): array
     {
-        $array = parent::toArray();
+        $array = parent::toArray($name);
         foreach ($this->enum as $name => $i18n) {
             $array['enum'][$name] = $i18n->toArray();
         }

@@ -66,14 +66,15 @@ class FieldGroup
         return $this->fields;
     }
 
-    public function toArray(): array
+    public function toArray(string $name): array
     {
         $array = [
+            'name' => $name,
             'label' => $this->label->toArray(),
             'fields' => [],
         ];
         foreach ($this->getFields() as $fieldName => $fieldDefinition) {
-            $array['fields'][$fieldName] = $fieldDefinition->toArray();
+            $array['fields'][$fieldName] = $fieldDefinition->toArray($fieldName);
         }
 
         return $array;

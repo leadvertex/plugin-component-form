@@ -104,7 +104,7 @@ class Scheme
         ];
 
         foreach ($this->getGroups() as $groupName => $fieldDefinition) {
-            $array['groups'][$groupName] = $fieldDefinition->toArray();
+            $array['groups'][$groupName] = $fieldDefinition->toArray($groupName);
         }
 
         return $array;

@@ -27,7 +27,7 @@ class ArrayDefinitionTest extends TestCase
     /** @var ArrayDefinition */
     private $arrayDefinition;
 
-    /** @var array */
+    /** @var i18n[] */
     private $enum;
 
     /**
@@ -168,24 +168,19 @@ class ArrayDefinitionTest extends TestCase
     public function testToArray()
     {
         $expected = [
+            'name' => 'Field name',
             'definition' => 'array',
             'label' => $this->label->toArray(),
             'description' => $this->description->toArray(),
             'default' => $this->default,
             'required' => $this->required,
             'enum' => [
-                'jan' => [
-                    'en' => 'January',
-                    'ru' => 'Январь',
-                ],
-                'feb' => [
-                    'en' => 'February',
-                    'ru' => 'Февраль',
-                ],
+                'jan' => $this->enum['jan']->toArray(),
+                'feb' => $this->enum['feb']->toArray(),
             ],
         ];
 
-        $this->assertEquals($expected, $this->arrayDefinition->toArray());
+        $this->assertEquals($expected, $this->arrayDefinition->toArray('Field name'));
     }
 
     public function testGetEnum()

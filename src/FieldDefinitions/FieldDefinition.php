@@ -64,9 +64,10 @@ abstract class FieldDefinition
      */
     abstract public function validateValue($value): bool;
 
-    public function toArray(): array
+    public function toArray(string $name): array
     {
         return [
+            'name' => $name,
             'definition' => $this->definition(),
             'label' => $this->label->toArray(),
             'description' => $this->description->toArray(),

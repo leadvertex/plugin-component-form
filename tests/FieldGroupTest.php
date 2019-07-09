@@ -92,12 +92,13 @@ class FieldGroupTest extends TestCase
     public function testToArray()
     {
         $this->assertEquals([
+            'name' => 'Field name',
             'label' => $this->label->toArray(),
             'fields' => [
-                'use' => $this->fields['use']->toArray(),
-                'printCaption' => $this->fields['printCaption']->toArray(),
+                'use' => $this->fields['use']->toArray('use'),
+                'printCaption' => $this->fields['printCaption']->toArray('printCaption'),
             ],
-        ], $this->group->toArray());
+        ], $this->group->toArray('Field name'));
     }
 
 }

@@ -65,8 +65,14 @@ class i18nTest extends TestCase
     public function testToArray()
     {
         $this->assertSame([
-            'ru' => 'Язык',
-            'en' => 'Language',
+            'ru' => [
+                'language' => 'ru',
+                'text' => 'Язык',
+            ],
+            'en' => [
+                'language' => 'en',
+                'text' => 'Language',
+            ],
         ], $this->translation->toArray());
     }
 

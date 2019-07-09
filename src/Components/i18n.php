@@ -37,7 +37,10 @@ class i18n
     {
         $languages = [];
         foreach ($this->languages as $language) {
-            $languages[$language->getLanguage()] = $language->getText();
+            $languages[$language->getLanguage()] = [
+                'language' => $language->getLanguage(),
+                'text' => $language->getText(),
+            ];
         }
 
         return $languages;
