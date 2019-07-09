@@ -79,8 +79,14 @@ class EnumDefinitionTest extends TestCase
             'default' => $this->default,
             'required' => $this->required,
             'enum' => [
-                'jan' => $this->enum['jan']->toArray(),
-                'feb' => $this->enum['feb']->toArray(),
+                'jan' => [
+                    'value' => 'jan',
+                    'label' => $this->enum['jan']->toArray()
+                ],
+                'feb' => [
+                    'value' => 'feb',
+                    'label' => $this->enum['feb']->toArray()
+                ],
             ],
         ];
 

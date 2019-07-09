@@ -86,8 +86,11 @@ class ArrayDefinition extends FieldDefinition
     public function toArray(string $name): array
     {
         $array = parent::toArray($name);
-        foreach ($this->enum as $name => $i18n) {
-            $array['enum'][$name] = $i18n->toArray();
+        foreach ($this->enum as $value => $i18n) {
+            $array['enum'][$value] = [
+                'value' => $value,
+                'label' => $i18n->toArray(),
+            ];
         }
         return $array;
     }
