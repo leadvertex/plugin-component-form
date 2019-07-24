@@ -1,6 +1,6 @@
 <?php
 /**
- * Created for plugin-scheme
+ * Created for plugin-form
  * Datetime: 08.07.2019 15:30
  * @author Timur Kasumov aka XAKEPEHOK
  */

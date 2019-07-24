@@ -26,7 +26,7 @@ class FieldGroupTest extends TestCase
     /** @var FieldGroup */
     private $group;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

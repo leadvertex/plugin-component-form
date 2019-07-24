@@ -1,6 +1,6 @@
 <?php
 /**
- * Created for plugin-scheme
+ * Created for plugin-form
  * Datetime: 08.07.2019 16:35
  * @author Timur Kasumov aka XAKEPEHOK
  */
@@ -25,7 +25,7 @@ class i18nTest extends TestCase
     /** @var i18n */
     private $translation;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->en = new Lang('en', 'Language');

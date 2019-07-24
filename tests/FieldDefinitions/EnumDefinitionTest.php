@@ -32,7 +32,7 @@ class EnumDefinitionTest extends TestCase
     /**
      * @throws Exception
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

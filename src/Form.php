@@ -1,6 +1,6 @@
 <?php
 /**
- * Created for plugin-export-core
+ * Created for plugin-form
  * Datetime: 02.07.2018 16:59
  * @author Timur Kasumov aka XAKEPEHOK
  */
@@ -11,7 +11,7 @@ namespace Leadvertex\Plugin\Scheme;
 use Leadvertex\Plugin\Scheme\Components\i18n;
 use TypeError;
 
-class Scheme
+class Form
 {
 
     /** @var i18n  */
@@ -23,19 +23,17 @@ class Scheme
     /** @var FieldGroup[] */
     protected $groups = [];
 
-    /** @var Developer */
-    private $developer;
+    /** @var FormData */
+    protected $data;
 
     /**
      * Scheme constructor.
-     * @param Developer $developer
      * @param i18n $name
      * @param i18n $description
      * @param FieldGroup[] $fieldGroups
      */
-    public function __construct(Developer $developer, i18n $name, i18n $description, array $fieldGroups)
+    public function __construct(i18n $name, i18n $description, array $fieldGroups)
     {
-        $this->developer = $developer;
         $this->name = $name;
         $this->description = $description;
 
@@ -45,14 +43,6 @@ class Scheme
             }
             $this->groups[$groupName] = $fieldsGroup;
         }
-    }
-
-    /**
-     * @return Developer
-     */
-    public function getDeveloper(): Developer
-    {
-        return $this->developer;
     }
 
     /**
@@ -90,20 +80,78 @@ class Scheme
         return $this->groups;
     }
 
+    public function validateData(FormData $formData): bool
+    {
+        foreach ($formData as $groupName => $fields) {
+            if (!array_key_exists($groupName, $this->groups)) {
+                return false;
+            }
+
+            $group = $this->groups[$groupName];
+            foreach ($fields as $fieldName => $value) {
+                if (!array_key_exists($fieldName, $group->getFields())) {
+                    return false;
+                }
+            }
+        }
+
+        foreach ($this->groups as $groupName => $group) {
+            foreach ($group->getFields() as $fieldName => $field) {
+                $path = "{$groupName}.{$fieldName}";
+                $value = $formData->get($path, $field->getDefaultValue());
+                if (!$field->validateValue($value)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return FormData
+     */
+    public function getData(): FormData
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param FormData $formData
+     * @return bool
+     */
+    public function setData(FormData $formData): bool
+    {
+        if (!$this->validateData($formData)) {
+            return false;
+        }
+
+        foreach ($this->groups as $groupName => $group) {
+            foreach ($group->getFields() as $fieldName => $field) {
+                $path = "{$groupName}.{$fieldName}";
+                if (!$formData->has($path)) {
+                    $formData->set($path, $field->getDefaultValue());
+                }
+            }
+        }
+
+        $this->data = $formData;
+        return true;
+    }
+
     /**
      * @return array
      */
     public function toArray(): array
     {
         $array = [
-            'developer' => $this->developer->toArray(),
             'name' => $this->name->toArray(),
             'description' => $this->description->toArray(),
             'groups' => [],
             'languages' => i18n::getLanguageList(),
         ];
 
-        foreach ($this->getGroups() as $groupName => $fieldDefinition) {
+        foreach ($this->groups as $groupName => $fieldDefinition) {
             $array['groups'][$groupName] = $fieldDefinition->toArray($groupName);
         }
 

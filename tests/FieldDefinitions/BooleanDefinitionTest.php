@@ -29,7 +29,7 @@ class BooleanDefinitionTest extends TestCase
     /**
      * @throws Exception
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->label = i18n::instance([

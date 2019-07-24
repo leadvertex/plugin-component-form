@@ -11,16 +11,14 @@ use Leadvertex\Plugin\Scheme\FieldDefinitions\StringDefinition;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
-class SchemeTest extends TestCase
+class FormTest extends TestCase
 {
-    /** @var Developer */
-    private $developer;
 
     /** @var FieldGroup[] */
     private $fieldGroups;
 
-    /** @var Scheme */
-    private $scheme;
+    /** @var Form */
+    private $form;
 
     /** @var i18n */
     private $label;
@@ -31,18 +29,15 @@ class SchemeTest extends TestCase
     /** @var i18n */
     private $defaultMultiLang;
 
+    /** @var FormData */
+    private $formData;
+
     /**
      * @throws Exception
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->developer = new Developer(
-            'Tony Stark',
-            'tony@starkindustries.com',
-            'starkindustries.com'
-        );
 
         $this->label = i18n::instance([
             new Lang('en', 'Organization name'),
@@ -76,27 +71,33 @@ class SchemeTest extends TestCase
                     new Lang('ru', 'Дополнительные настройки'),
                 ]),
                 [
-                    'field_3' => new IntegerDefinition($this->defaultMultiLang, $this->defaultMultiLang, 1, true),
-                    'field_4' => new StringDefinition($this->defaultMultiLang, $this->defaultMultiLang, 'default value for test', true),
+                    'field_3' => new IntegerDefinition($this->defaultMultiLang, $this->defaultMultiLang, 3, false),
+                    'field_4' => new StringDefinition($this->defaultMultiLang, $this->defaultMultiLang, 'hello kitty', false),
                 ]
             ),
         ];
 
-        $this->scheme = new Scheme(
-            $this->developer,
+        $this->form = new Form(
             $this->label,
             $this->description,
             $this->fieldGroups
         );
 
+        $this->formData = new FormData([
+            'main' => [
+                'field_1' => 1,
+                'field_2' => 'hello world',
+            ]
+        ]);
+
+        $this->form->setData($this->formData);
     }
 
     public function testCreateWithNotFieldGroupType()
     {
         $this->expectException(TypeError::class);
         $fieldGroups = [5, 10];
-        new Scheme(
-            $this->developer,
+        new Form(
             $this->label,
             $this->description,
             $fieldGroups
@@ -105,23 +106,17 @@ class SchemeTest extends TestCase
 
     public function testGetFields()
     {
-        $this->assertEquals($this->fieldGroups, $this->scheme->getGroups());
-    }
-
-    public function testGetDeveloper()
-    {
-        $this->assertEquals($this->developer, $this->scheme->getDeveloper());
+        $this->assertEquals($this->fieldGroups, $this->form->getGroups());
     }
 
     public function testGetDescription()
     {
-        $this->assertEquals($this->description, $this->scheme->getDescription());
+        $this->assertEquals($this->description, $this->form->getDescription());
     }
 
     public function testToArray()
     {
         $expected = [
-            'developer' => $this->developer->toArray(),
             'name' => $this->label->toArray(),
             'description' => $this->description->toArray(),
             'groups' => [],
@@ -131,29 +126,106 @@ class SchemeTest extends TestCase
             $expected['groups'][$groupName] = $fieldGroup->toArray($groupName);
         }
 
-        $this->assertEquals($expected, $this->scheme->toArray());
+        $this->assertEquals($expected, $this->form->toArray());
     }
 
     public function testGetGroup()
     {
         $this->assertEquals(
             $this->fieldGroups['main'],
-            $this->scheme->getGroup('main')
+            $this->form->getGroup('main')
         );
 
         $this->assertEquals(
             $this->fieldGroups['additional'],
-            $this->scheme->getGroup('additional')
+            $this->form->getGroup('additional')
         );
+    }
+
+
+
+    public function testValidateData()
+    {
+        $this->assertFalse($this->form->validateData(new FormData([
+            'main' => [],
+            'additional' => [],
+            'extra' => [],
+        ])));
+
+        $this->assertFalse($this->form->validateData(new FormData([
+            'main' => [
+                'field_1' => 1,
+                'field_2' => 'hello world',
+                'field_3' => '',
+            ],
+        ])));
+
+        $this->assertFalse($this->form->validateData(new FormData([
+            'main' => [
+                'field_1' => null,
+                'field_2' => null,
+            ],
+        ])));
+
+        $this->assertTrue($this->form->validateData(new FormData([
+            'main' => [
+                'field_1' => 1,
+                'field_2' => 'hello world',
+            ],
+        ])));
+
+        $this->assertTrue($this->form->validateData(new FormData([])));
+    }
+
+    public function testGetData()
+    {
+        $this->assertEquals([
+            'main' => [
+                'field_1' => 1,
+                'field_2' => 'hello world',
+            ],
+            'additional' => [
+                'field_3' => 3,
+                'field_4' => 'hello kitty',
+            ]
+        ], $this->form->getData()->all());
+    }
+
+    public function testSetData()
+    {
+        $data = new FormData([
+            'main' => [
+                'field_1' => 1,
+                'field_2' => 'hello world',
+            ],
+            'additional' => [
+                'field_3' => null,
+                'field_4' => '',
+            ]
+        ]);
+
+        $result = $this->form->setData($data);
+        $this->assertTrue($result);
+        $this->assertEquals($data->all(), $this->form->getData()->all());
+
+        $data = new FormData([
+            'main' => [
+                'field_1' => 'hello',
+                'field_2' => 'hello',
+            ],
+        ]);
+        $result = $this->form->setData($data);
+        $this->assertFalse($result);
     }
 
     public function testGetGroups()
     {
-        $this->assertEquals($this->fieldGroups, $this->scheme->getGroups());
+        $this->assertEquals($this->fieldGroups, $this->form->getGroups());
     }
 
     public function testGetName()
     {
-        $this->assertEquals($this->label, $this->scheme->getName());
+        $this->assertEquals($this->label, $this->form->getName());
     }
+
 }

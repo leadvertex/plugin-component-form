@@ -1,6 +1,6 @@
 <?php
 /**
- * Created for plugin-scheme
+ * Created for plugin-form
  * Datetime: 17.07.2019 13:32
  * @author Timur Kasumov aka XAKEPEHOK
  */
@@ -33,7 +33,7 @@ class PasswordDefinitionTest extends TestCase
     /**
      * @throws Exception
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -1,6 +1,6 @@
 {
-  "name": "leadvertex/plugin-scheme",
-  "description": "LeadVertex plugins scheme component",
+  "name": "leadvertex/plugin-form",
+  "description": "LeadVertex plugins form component",
   "type": "library",
   "minimum-stability": "stable",
   "license": "proprietary",
@@ -12,19 +12,20 @@
   ],
   "autoload": {
     "psr-4": {
-      "Leadvertex\\Plugin\\Scheme\\": "src/"
+      "Leadvertex\\Plugin\\Form\\": "src/"
     }
   },
   "require": {
     "php": ">=7.1.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "adbario/php-dot-notation": "^2.2"
   },
   "autoload-dev": {
     "psr-4": {
-      "Leadvertex\\Plugin\\Scheme\\": "tests/"
+      "Leadvertex\\Plugin\\Form\\": "tests/"
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.1"
-    }
+    "phpunit/phpunit": "^8.2"
   }
+}

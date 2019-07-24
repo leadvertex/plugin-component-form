@@ -1,6 +1,6 @@
 <?php
 /**
- * Created for plugin-scheme
+ * Created for plugin-form
  * Datetime: 08.07.2019 16:10
  * @author Timur Kasumov aka XAKEPEHOK
  */
@@ -15,7 +15,7 @@ class LangTest extends TestCase
     /** @var Lang */
     private $language;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->language = new Lang('en', 'Use headers');

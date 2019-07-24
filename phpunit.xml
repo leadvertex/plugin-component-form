@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Leadvertex plugin scheme test">
+        <testsuite name="Leadvertex plugin form test">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
