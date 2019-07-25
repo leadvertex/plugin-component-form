@@ -1,13 +1,12 @@
 <?php
 
-namespace Leadvertex\Plugin\Scheme;
+namespace Leadvertex\Plugin\Form;
 
 
 use Exception;
-use Leadvertex\Plugin\Scheme\Components\Lang;
-use Leadvertex\Plugin\Scheme\Components\i18n;
-use Leadvertex\Plugin\Scheme\FieldDefinitions\IntegerDefinition;
-use Leadvertex\Plugin\Scheme\FieldDefinitions\StringDefinition;
+use Leadvertex\Plugin\Form\FieldDefinitions\IntegerDefinition;
+use Leadvertex\Plugin\Form\FieldDefinitions\StringDefinition;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
@@ -20,13 +19,13 @@ class FormTest extends TestCase
     /** @var Form */
     private $form;
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $label;
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $description;
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $defaultMultiLang;
 
     /** @var FormData */
@@ -39,37 +38,20 @@ class FormTest extends TestCase
     {
         parent::setUp();
 
-        $this->label = i18n::instance([
-            new Lang('en', 'Organization name'),
-            new Lang('ru', 'Название организации'),
-        ]);
-
-        $this->description = i18n::instance([
-            new Lang('en', 'Description'),
-            new Lang('ru', 'Описание'),
-        ]);
-
-        $this->defaultMultiLang = i18n::instance([
-            new Lang('en', 'default test field'),
-            new Lang('ru', 'Дефолтное тестовое поле'),
-        ]);
+        $this->label = new I18n('Organization name', 'Название организации');
+        $this->description = new I18n('Description', 'Описание');
+        $this->defaultMultiLang = new I18n('default test field', 'Дефолтное тестовое поле');
 
         $this->fieldGroups = [
             'main' => new FieldGroup(
-                i18n::instance([
-                    new Lang('en', 'Main settings'),
-                    new Lang('ru', 'Основные настройки'),
-                ]),
+                new I18n('Main settings', 'Основные настройки'),
                 [
                     'field_1' => new IntegerDefinition($this->defaultMultiLang, $this->defaultMultiLang, 1, true),
                     'field_2' => new StringDefinition($this->defaultMultiLang, $this->defaultMultiLang, 'default value for test', true),
                 ]
             ),
             'additional' => new FieldGroup(
-                i18n::instance([
-                    new Lang('en', 'Additional settings'),
-                    new Lang('ru', 'Дополнительные настройки'),
-                ]),
+                new I18n('Additional settings', 'Дополнительные настройки'),
                 [
                     'field_3' => new IntegerDefinition($this->defaultMultiLang, $this->defaultMultiLang, 3, false),
                     'field_4' => new StringDefinition($this->defaultMultiLang, $this->defaultMultiLang, 'hello kitty', false),
@@ -117,10 +99,9 @@ class FormTest extends TestCase
     public function testToArray()
     {
         $expected = [
-            'name' => $this->label->toArray(),
-            'description' => $this->description->toArray(),
+            'name' => $this->label->get(),
+            'description' => $this->description->get(),
             'groups' => [],
-            'languages' => ['en', 'ru'],
         ];
         foreach ($this->fieldGroups as $groupName => $fieldGroup) {
             $expected['groups'][$groupName] = $fieldGroup->toArray($groupName);

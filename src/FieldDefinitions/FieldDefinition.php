@@ -1,15 +1,15 @@
 <?php
 /**
- * Created for plugin-export-core.
+ * Created for plugin-form.
  * Datetime: 02.07.2018 15:33
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 
 use Exception;
-use Leadvertex\Plugin\Scheme\Components\i18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 
 abstract class FieldDefinition
 {
@@ -21,13 +21,13 @@ abstract class FieldDefinition
 
     /**
      * ConfigDefinition constructor.
-     * @param i18n $label
-     * @param i18n $description
+     * @param I18nInterface $label
+     * @param I18nInterface $description
      * @param string|int|float|bool|array|null $default value
      * @param bool $required is this field required
      * @throws Exception
      */
-    public function __construct(i18n $label, i18n $description, $default, bool $required)
+    public function __construct(I18nInterface $label, I18nInterface $description, $default, bool $required)
     {
         $this->label = $label;
         $this->description = $description;
@@ -69,8 +69,8 @@ abstract class FieldDefinition
         return [
             'name' => $name,
             'definition' => $this->definition(),
-            'label' => $this->label->toArray(),
-            'description' => $this->description->toArray(),
+            'label' => $this->label->get(),
+            'description' => $this->description->get(),
             'default' => $this->default,
             'required' => (bool) $this->required,
         ];

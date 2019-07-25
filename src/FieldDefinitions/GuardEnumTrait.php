@@ -5,10 +5,10 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 
-use Leadvertex\Plugin\Scheme\Components\i18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use TypeError;
 
 trait GuardEnumTrait
@@ -17,8 +17,8 @@ trait GuardEnumTrait
     private function guardEnumI18n(array $translations)
     {
         foreach ($translations as $translation) {
-            if (!($translation instanceof i18n)) {
-                throw new TypeError('Every enum label should be instance of ' . i18n::class);
+            if (!($translation instanceof I18nInterface)) {
+                throw new TypeError('Every enum label should be instance of ' . I18nInterface::class);
             }
         }
     }

@@ -5,20 +5,20 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 use Exception;
-use Leadvertex\Plugin\Scheme\Components\i18n;
-use Leadvertex\Plugin\Scheme\Components\Lang;
+use Leadvertex\Plugin\Form\I18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 
 class PasswordDefinitionTest extends TestCase
 {
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $label;
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $description;
 
     /** @var string */
@@ -36,16 +36,8 @@ class PasswordDefinitionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->label = i18n::instance([
-            new Lang('en', 'Password'),
-            new Lang('ru', 'Пароль'),
-        ]);
-
-        $this->description = i18n::instance([
-            new Lang('en', 'Description'),
-            new Lang('ru', 'Описание'),
-        ]);
+        $this->label = new I18n('Password', 'Пароль');
+        $this->description = new I18n('Description', 'Описание');
 
         $this->default = 'qwerty';
         $this->required = true;

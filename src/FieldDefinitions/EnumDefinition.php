@@ -1,15 +1,15 @@
 <?php
 /**
- * Created for plugin-export-core.
+ * Created for plugin-form.
  * Datetime: 02.07.2018 16:07
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 
 use Exception;
-use Leadvertex\Plugin\Scheme\Components\i18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 
 class EnumDefinition extends FieldDefinition
 {
@@ -20,9 +20,9 @@ class EnumDefinition extends FieldDefinition
 
     /**
      * ConfigDefinition constructor.
-     * @param i18n $label
-     * @param i18n $description
-     * @param i18n[] $enum witch represent value => caption dropdown in different languages
+     * @param I18nInterface $label
+     * @param I18nInterface $description
+     * @param I18nInterface[] $enum witch represent value => caption dropdown in different languages
      * array(
      *  '01' => new MultiLang('en' => 'January', 'ru' => 'Январь'),
      *  '02' => new MultiLang('en' => 'February', 'ru' => 'Февраль'),
@@ -31,7 +31,7 @@ class EnumDefinition extends FieldDefinition
      * @param bool $required is this field required
      * @throws Exception
      */
-    public function __construct(i18n $label, i18n $description, array $enum, $default, bool $required)
+    public function __construct(I18nInterface $label, I18nInterface $description, array $enum, $default, bool $required)
     {
         parent::__construct($label, $description, $default, $required);
         $this->guardEnumI18n($enum);
@@ -49,10 +49,10 @@ class EnumDefinition extends FieldDefinition
     public function toArray(string $name): array
     {
         $array = parent::toArray($name);
-        foreach ($this->enum as $value => $i18n) {
+        foreach ($this->enum as $value => $I18nInterface) {
             $array['enum'][$value] = [
                 'value' => $value,
-                'label' => $i18n->toArray(),
+                'label' => $I18nInterface->get(),
             ];
         }
         return $array;

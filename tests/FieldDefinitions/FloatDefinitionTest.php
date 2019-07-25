@@ -1,19 +1,19 @@
 <?php
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 
 use Exception;
-use Leadvertex\Plugin\Scheme\Components\Lang;
-use Leadvertex\Plugin\Scheme\Components\i18n;
+use Leadvertex\Plugin\Form\I18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 
 class FloatDefinitionTest extends TestCase
 {
-    /** @var i18n */
+    /** @var I18nInterface */
     private $label;
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $description;
 
     /** @var string */
@@ -31,16 +31,8 @@ class FloatDefinitionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->label = i18n::instance([
-            new Lang('en', 'Your weight'),
-            new Lang('ru', 'Ваш вес'),
-        ]);
-
-        $this->description = i18n::instance([
-            new Lang('en', 'Description'),
-            new Lang('ru', 'Описание'),
-        ]);
+        $this->label = new I18n('Your weight', 'Ваш вес');
+        $this->description = new I18n('Description', 'Описание');
 
         $this->default = 2.95;
         $this->required = true;

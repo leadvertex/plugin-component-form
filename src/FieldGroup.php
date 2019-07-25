@@ -1,22 +1,22 @@
 <?php
 /**
- * Created for plugin-export-core
+ * Created for plugin-form
  * Datetime: 04.07.2019 16:18
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme;
+namespace Leadvertex\Plugin\Form;
 
 
-use Leadvertex\Plugin\Scheme\Components\i18n;
-use Leadvertex\Plugin\Scheme\FieldDefinitions\FieldDefinition;
+use Leadvertex\Plugin\Form\FieldDefinitions\FieldDefinition;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use TypeError;
 
 class FieldGroup
 {
 
     /**
-     * @var i18n
+     * @var I18nInterface
      */
     private $label;
     /**
@@ -26,10 +26,10 @@ class FieldGroup
 
     /**
      * FieldsGroup constructor.
-     * @param i18n $label
+     * @param I18nInterface $label
      * @param FieldDefinition[] $fields
      */
-    public function __construct(i18n $label, array $fields)
+    public function __construct(I18nInterface $label, array $fields)
     {
         $this->label = $label;
 
@@ -42,9 +42,9 @@ class FieldGroup
     }
 
     /**
-     * @return i18n
+     * @return I18nInterface
      */
-    public function getLabel(): i18n
+    public function getLabel(): I18nInterface
     {
         return $this->label;
     }
@@ -70,7 +70,7 @@ class FieldGroup
     {
         $array = [
             'name' => $name,
-            'label' => $this->label->toArray(),
+            'label' => $this->label->get(),
             'fields' => [],
         ];
         foreach ($this->getFields() as $fieldName => $fieldDefinition) {

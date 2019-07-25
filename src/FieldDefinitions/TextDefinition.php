@@ -1,11 +1,11 @@
 <?php
 /**
- * Created for plugin-export-core.
+ * Created for plugin-form.
  * Datetime: 02.07.2018 16:07
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 
 class TextDefinition extends StringDefinition

@@ -1,21 +1,21 @@
 <?php
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 
 use Exception;
-use Leadvertex\Plugin\Scheme\Components\Lang;
-use Leadvertex\Plugin\Scheme\Components\i18n;
+use Leadvertex\Plugin\Form\I18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
 class ArrayDefinitionTest extends TestCase
 {
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $label;
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $description;
 
     /** @var mixed */
@@ -27,7 +27,7 @@ class ArrayDefinitionTest extends TestCase
     /** @var ArrayDefinition */
     private $arrayDefinition;
 
-    /** @var i18n[] */
+    /** @var I18nInterface[] */
     private $enum;
 
     /**
@@ -37,29 +37,13 @@ class ArrayDefinitionTest extends TestCase
     {
         parent::setUp();
 
-        $this->label = i18n::instance([
-            new Lang('en', 'Organization name'),
-            new Lang('ru', 'Название организации'),
-        ]);
-
-        $this->description = i18n::instance([
-            new Lang('en', 'Description'),
-            new Lang('ru', 'Описание'),
-        ]);
-
+        $this->label = new I18n('Organization name', 'Название организации');
+        $this->description = new I18n('Description', 'Описание');
         $this->default = [];
-
         $this->required = true;
-
         $this->enum = [
-            'jan' => i18n::instance([
-                new Lang('en', 'January'),
-                new Lang('ru', 'Январь'),
-            ]),
-            'feb' => i18n::instance([
-                new Lang('en', 'February'),
-                new Lang('ru', 'Февраль'),
-            ]),
+            'jan' => new I18n('January', 'Январь'),
+            'feb' => new I18n('February', 'Февраль'),
         ];
 
         $this->arrayDefinition = new ArrayDefinition(
@@ -170,18 +154,18 @@ class ArrayDefinitionTest extends TestCase
         $expected = [
             'name' => 'Field name',
             'definition' => 'array',
-            'label' => $this->label->toArray(),
-            'description' => $this->description->toArray(),
+            'label' => $this->label->get(),
+            'description' => $this->description->get(),
             'default' => $this->default,
             'required' => $this->required,
             'enum' => [
                 'jan' => [
                     'value' => 'jan',
-                    'label' => $this->enum['jan']->toArray()
+                    'label' => $this->enum['jan']->get()
                 ],
                 'feb' => [
                     'value' => 'feb',
-                    'label' => $this->enum['feb']->toArray()
+                    'label' => $this->enum['feb']->get()
                 ],
             ],
         ];

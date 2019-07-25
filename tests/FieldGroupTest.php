@@ -1,23 +1,22 @@
 <?php
 /**
- * Created for plugin-export-core
+ * Created for plugin-form
  * Datetime: 04.07.2019 16:49
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme;
+namespace Leadvertex\Plugin\Form;
 
-use Leadvertex\Plugin\Scheme\Components\Lang;
-use Leadvertex\Plugin\Scheme\Components\i18n;
-use Leadvertex\Plugin\Scheme\FieldDefinitions\BooleanDefinition;
-use Leadvertex\Plugin\Scheme\FieldDefinitions\FieldDefinition;
+use Leadvertex\Plugin\Form\FieldDefinitions\BooleanDefinition;
+use Leadvertex\Plugin\Form\FieldDefinitions\FieldDefinition;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
 class FieldGroupTest extends TestCase
 {
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $label;
 
     /** @var FieldDefinition[] */
@@ -30,33 +29,18 @@ class FieldGroupTest extends TestCase
     {
         parent::setUp();
 
-        $this->label = i18n::instance([
-            new Lang('en', 'Main settings'),
-            new Lang('ru', 'Основные настройки'),
-        ]);
+        $this->label = new I18n('Main settings', 'Основные настройки');
 
         $this->fields = [
             'use' => new BooleanDefinition(
-                i18n::instance([
-                    new Lang('en', 'Use this format'),
-                    new Lang('ru', 'Использовать этот формат'),
-                ]),
-                i18n::instance([
-                    new Lang('en', 'Include this type in export'),
-                    new Lang('ru', 'Включать этот тип в выгрузку'),
-                ]),
+                new I18n('Use this format', 'Использовать этот формат'),
+                new I18n('Include this type in export', 'Включать этот тип в выгрузку'),
                 true,
                 false
             ),
             'printCaption' => new BooleanDefinition(
-                i18n::instance([
-                    new Lang('en', 'Print caption'),
-                    new Lang('ru', 'Печатать заголовок'),
-                ]),
-                i18n::instance([
-                    new Lang('en', 'Print caption at first page'),
-                    new Lang('ru', 'Печатает заголовок на первой странице'),
-                ]),
+                new I18n('Print caption', 'Печатать заголовок'),
+                new I18n('Print caption at first page', 'Печатает заголовок на первой странице'),
                 true,
                 false
             ),
@@ -93,7 +77,7 @@ class FieldGroupTest extends TestCase
     {
         $this->assertEquals([
             'name' => 'Field name',
-            'label' => $this->label->toArray(),
+            'label' => $this->label->get(),
             'fields' => [
                 'use' => $this->fields['use']->toArray('use'),
                 'printCaption' => $this->fields['printCaption']->toArray('printCaption'),

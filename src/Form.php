@@ -5,19 +5,19 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme;
+namespace Leadvertex\Plugin\Form;
 
 
-use Leadvertex\Plugin\Scheme\Components\i18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use TypeError;
 
 class Form
 {
 
-    /** @var i18n  */
+    /** @var I18nInterface  */
     protected $name;
 
-    /** @var i18n  */
+    /** @var I18nInterface  */
     protected $description;
 
     /** @var FieldGroup[] */
@@ -28,11 +28,11 @@ class Form
 
     /**
      * Scheme constructor.
-     * @param i18n $name
-     * @param i18n $description
+     * @param I18nInterface $name
+     * @param I18nInterface $description
      * @param FieldGroup[] $fieldGroups
      */
-    public function __construct(i18n $name, i18n $description, array $fieldGroups)
+    public function __construct(I18nInterface $name, I18nInterface $description, array $fieldGroups)
     {
         $this->name = $name;
         $this->description = $description;
@@ -47,18 +47,18 @@ class Form
 
     /**
      * Return property name in passed language. If passed language was not defined, will return name in default language
-     * @return i18n
+     * @return I18nInterface
      */
-    public function getName(): i18n
+    public function getName(): I18nInterface
     {
         return $this->name;
     }
 
     /**
      * Return property description in passed language. If passed language was not defined, will return description in default language
-     * @return i18n
+     * @return I18nInterface
      */
-    public function getDescription(): i18n
+    public function getDescription(): I18nInterface
     {
         return $this->description;
     }
@@ -145,10 +145,9 @@ class Form
     public function toArray(): array
     {
         $array = [
-            'name' => $this->name->toArray(),
-            'description' => $this->description->toArray(),
+            'name' => $this->name->get(),
+            'description' => $this->description->get(),
             'groups' => [],
-            'languages' => i18n::getLanguageList(),
         ];
 
         foreach ($this->groups as $groupName => $fieldDefinition) {

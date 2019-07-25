@@ -5,7 +5,7 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme;
+namespace Leadvertex\Plugin\Form;
 
 
 use Adbar\Dot;

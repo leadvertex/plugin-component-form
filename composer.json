@@ -18,7 +18,8 @@
   "require": {
     "php": ">=7.1.0",
     "ext-json": "*",
-    "adbario/php-dot-notation": "^2.2"
+    "adbario/php-dot-notation": "^2.2",
+    "leadvertex/plugin-i18n": "^0.0.3"
   },
   "autoload-dev": {
     "psr-4": {

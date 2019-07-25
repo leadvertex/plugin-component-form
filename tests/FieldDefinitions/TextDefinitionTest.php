@@ -1,20 +1,20 @@
 <?php
 
-namespace Leadvertex\Plugin\Scheme\FieldDefinitions;
+namespace Leadvertex\Plugin\Form\FieldDefinitions;
 
 
 use Exception;
-use Leadvertex\Plugin\Scheme\Components\Lang;
-use Leadvertex\Plugin\Scheme\Components\i18n;
+use Leadvertex\Plugin\Form\I18n;
+use Leadvertex\Plugin\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 
 class TextDefinitionTest extends TestCase
 {
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $label;
 
-    /** @var i18n */
+    /** @var I18nInterface */
     private $description;
 
     /** @var string */
@@ -32,16 +32,8 @@ class TextDefinitionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->label = i18n::instance([
-            new Lang('en', 'Organization name'),
-            new Lang('ru', 'Название организации')
-        ]);
-
-        $this->description = i18n::instance([
-            new Lang('en', 'Description'),
-            new Lang('ru', 'Описание')
-        ]);
+        $this->label = new I18n('Comment', 'Комментарий');
+        $this->description = new I18n('Description', 'Описание');
 
         $this->default = 'Test value for default param';
         $this->required = true;

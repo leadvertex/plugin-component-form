@@ -5,7 +5,7 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Scheme\Exceptions;
+namespace Leadvertex\Plugin\Form\Exceptions;
 
 
 use LogicException;
