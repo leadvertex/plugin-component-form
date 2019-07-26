@@ -5,10 +5,10 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Form\FieldDefinitions;
+namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 
-use Leadvertex\Plugin\I18n\I18nInterface;
+use Leadvertex\Plugin\Components\I18n\I18nInterface;
 
 class StringDefinition extends FieldDefinition
 {

@@ -1,5 +1,5 @@
 {
-  "name": "leadvertex/plugin-form",
+  "name": "leadvertex/plugin-component-form",
   "description": "LeadVertex plugins form component",
   "type": "library",
   "minimum-stability": "stable",
@@ -12,18 +12,18 @@
   ],
   "autoload": {
     "psr-4": {
-      "Leadvertex\\Plugin\\Form\\": "src/"
+      "Leadvertex\\Plugin\\Components\\Form\\": "src/"
     }
   },
   "require": {
     "php": ">=7.1.0",
     "ext-json": "*",
     "adbario/php-dot-notation": "^2.2",
-    "leadvertex/plugin-i18n": "^0.0.3"
+    "leadvertex/plugin-component-i18n": "^0.0.4"
   },
   "autoload-dev": {
     "psr-4": {
-      "Leadvertex\\Plugin\\Form\\": "tests/"
+      "Leadvertex\\Plugin\\Components\\Form\\": "tests/"
     }
   },
   "require-dev": {

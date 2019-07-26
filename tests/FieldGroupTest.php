@@ -5,11 +5,11 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Form;
+namespace Leadvertex\Plugin\Components\Form;
 
-use Leadvertex\Plugin\Form\FieldDefinitions\BooleanDefinition;
-use Leadvertex\Plugin\Form\FieldDefinitions\FieldDefinition;
-use Leadvertex\Plugin\I18n\I18nInterface;
+use Leadvertex\Plugin\Components\Form\FieldDefinitions\BooleanDefinition;
+use Leadvertex\Plugin\Components\Form\FieldDefinitions\FieldDefinition;
+use Leadvertex\Plugin\Components\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 

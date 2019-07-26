@@ -5,11 +5,11 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Form\FieldDefinitions;
+namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 use Exception;
-use Leadvertex\Plugin\Form\I18n;
-use Leadvertex\Plugin\I18n\I18nInterface;
+use Leadvertex\Plugin\Components\Form\I18n;
+use Leadvertex\Plugin\Components\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 
 class PasswordDefinitionTest extends TestCase

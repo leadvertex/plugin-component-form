@@ -5,10 +5,10 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Form;
+namespace Leadvertex\Plugin\Components\Form;
 
 
-use Leadvertex\Plugin\I18n\I18nInterface;
+use Leadvertex\Plugin\Components\I18n\I18nInterface;
 use TypeError;
 
 class Form
