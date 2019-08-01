@@ -19,19 +19,37 @@ class I18n implements I18nInterface
     public function __construct(string $en, string $ru)
     {
         $this->translations = [
-            'en' => $en,
-            'ru' => $ru,
+            'en' => [
+                'lang' => 'en',
+                'text' => $en,
+            ],
+            'ru' => [
+                'lang' => 'ru',
+                'text' => $ru,
+            ],
         ];
     }
 
     /**
-     * Should return array like
-     * array(
-     *  'en' => 'Message',
-     *  'ru' => 'Сообщение',
-     *  'es' => 'El mensaje',
-     * )
-     * with same language order in constructor. See README.md for details
+     * Every language code should be alpha-2 code
+     * @see https://en.wikipedia.org/wiki/ISO_639-1
+     *
+     * Example:
+     * [
+     *      'en' => [
+     *          'lang' => 'en',
+     *          'text' => 'Message',
+     *      ],
+     *      'ru' => [
+     *          'lang' => 'ru',
+     *          'text' => 'Сообщение',
+     *      ],
+     *      'es' => [
+     *          'lang' => 'es',
+     *          'text' => 'El mensaje',
+     *      ],
+     * ]
+     *     *
      * @return array
      */
     public function get(): array
@@ -41,8 +59,7 @@ class I18n implements I18nInterface
 
     /**
      * Method should return array of used languages by alpha-2 code
-     * @see https://en.wikipedia.org/wiki/ISO_639-1 with same order as
-     * in constructor. See README.md for details
+     * @see https://en.wikipedia.org/wiki/ISO_639-1
      * @return array, for example ['en', 'ru', 'es', ...]
      */
     public static function getLanguages(): array
