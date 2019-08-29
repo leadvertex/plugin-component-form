@@ -24,7 +24,7 @@ class TextDefinitionTest extends TestCase
     private $required;
 
     /** @var TextDefinition */
-    private $textDefinition;
+    private $definition;
 
     /**
      * @throws Exception
@@ -38,7 +38,7 @@ class TextDefinitionTest extends TestCase
         $this->default = 'Test value for default param';
         $this->required = true;
 
-        $this->textDefinition = new TextDefinition(
+        $this->definition = new TextDefinition(
             $this->label,
             $this->description,
             $this->default,
@@ -49,7 +49,7 @@ class TextDefinitionTest extends TestCase
 
     public function testDefinition()
     {
-        $this->assertEquals('text', $this->textDefinition->definition());
+        $this->assertEquals('text', $this->definition->definition());
     }
 
 }

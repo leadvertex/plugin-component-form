@@ -25,7 +25,7 @@ class ArrayDefinitionTest extends TestCase
     private $required;
 
     /** @var ArrayDefinition */
-    private $arrayDefinition;
+    private $definition;
 
     /** @var I18nInterface[] */
     private $enum;
@@ -46,7 +46,7 @@ class ArrayDefinitionTest extends TestCase
             'feb' => new I18n('February', 'Февраль'),
         ];
 
-        $this->arrayDefinition = new ArrayDefinition(
+        $this->definition = new ArrayDefinition(
             $this->label,
             $this->description,
             $this->enum,
@@ -66,7 +66,7 @@ class ArrayDefinitionTest extends TestCase
             ['invalid text for Enum'],
         ];
 
-        $this->arrayDefinition = new ArrayDefinition(
+        $this->definition = new ArrayDefinition(
             $this->label,
             $this->description,
             $enum,
@@ -77,7 +77,7 @@ class ArrayDefinitionTest extends TestCase
 
     public function testDefinition()
     {
-        $this->assertEquals('array', $this->arrayDefinition->definition());
+        $this->assertEquals('array', $this->definition->definition());
     }
 
     /**
@@ -170,11 +170,11 @@ class ArrayDefinitionTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $this->arrayDefinition->toArray('Field name'));
+        $this->assertEquals($expected, $this->definition->toArray('Field name'));
     }
 
     public function testGetEnum()
     {
-        $this->assertEquals($this->enum, $this->arrayDefinition->getEnum());
+        $this->assertEquals($this->enum, $this->definition->getEnum());
     }
 }

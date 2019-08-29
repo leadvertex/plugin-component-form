@@ -23,7 +23,7 @@ class IntegerDefinitionTest extends TestCase
     private $required;
 
     /** @var StringDefinition */
-    private $integerDefinition;
+    private $definition;
 
     /**
      * @throws Exception
@@ -37,7 +37,7 @@ class IntegerDefinitionTest extends TestCase
         $this->default = 5;
         $this->required = true;
 
-        $this->integerDefinition = new IntegerDefinition(
+        $this->definition = new IntegerDefinition(
             $this->label,
             $this->description,
             $this->default,
@@ -48,7 +48,7 @@ class IntegerDefinitionTest extends TestCase
 
     public function testDefinition()
     {
-        $this->assertEquals('integer', $this->integerDefinition->definition());
+        $this->assertEquals('integer', $this->definition->definition());
     }
 
     /**

@@ -23,7 +23,7 @@ class FloatDefinitionTest extends TestCase
     private $required;
 
     /** @var StringDefinition */
-    private $floatDefinition;
+    private $definition;
 
     /**
      * @throws Exception
@@ -37,7 +37,7 @@ class FloatDefinitionTest extends TestCase
         $this->default = 2.95;
         $this->required = true;
 
-        $this->floatDefinition = new FloatDefinition(
+        $this->definition = new FloatDefinition(
             $this->label,
             $this->description,
             $this->default,
@@ -48,7 +48,7 @@ class FloatDefinitionTest extends TestCase
 
     public function testDefinition()
     {
-        $this->assertEquals('float', $this->floatDefinition->definition());
+        $this->assertEquals('float', $this->definition->definition());
     }
 
     /**

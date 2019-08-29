@@ -12,7 +12,7 @@ class BooleanDefinitionTest extends TestCase
 {
 
     /** @var BooleanDefinition */
-    private $checkboxDefinition;
+    private $definition;
 
     /** @var I18nInterface */
     private $label;
@@ -37,7 +37,7 @@ class BooleanDefinitionTest extends TestCase
         $this->default = 'Test value for default param';
         $this->required = true;
 
-        $this->checkboxDefinition = new BooleanDefinition(
+        $this->definition = new BooleanDefinition(
             $this->label,
             $this->description,
             $this->default,
@@ -47,7 +47,7 @@ class BooleanDefinitionTest extends TestCase
 
     public function testDefinition()
     {
-        $this->assertEquals('boolean', $this->checkboxDefinition->definition());
+        $this->assertEquals('boolean', $this->definition->definition());
     }
 
     /**
@@ -117,11 +117,11 @@ class BooleanDefinitionTest extends TestCase
 
     public function testGetDefaultValue()
     {
-        $this->assertEquals($this->default, $this->checkboxDefinition->getDefaultValue());
+        $this->assertEquals($this->default, $this->definition->getDefaultValue());
     }
 
     public function testIsRequired()
     {
-        $this->assertEquals($this->required, $this->checkboxDefinition->isRequired());
+        $this->assertEquals($this->required, $this->definition->isRequired());
     }
 }

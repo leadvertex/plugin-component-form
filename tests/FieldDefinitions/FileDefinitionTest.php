@@ -1,14 +1,18 @@
 <?php
+/**
+ * Created for plugin-component-form
+ * Datetime: 29.08.2019 12:45
+ * @author Timur Kasumov aka XAKEPEHOK
+ */
 
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
-
 
 use Exception;
 use Leadvertex\Plugin\Components\Form\I18n;
 use Leadvertex\Plugin\Components\I18n\I18nInterface;
 use PHPUnit\Framework\TestCase;
 
-class StringDefinitionTest extends TestCase
+class FileDefinitionTest extends TestCase
 {
     /** @var I18nInterface */
     private $label;
@@ -22,7 +26,7 @@ class StringDefinitionTest extends TestCase
     /** @var bool */
     private $required;
 
-    /** @var StringDefinition */
+    /** @var FileDefinition */
     private $definition;
 
     /**
@@ -37,7 +41,7 @@ class StringDefinitionTest extends TestCase
         $this->default = 'Test value for default param';
         $this->required = true;
 
-        $this->definition = new StringDefinition(
+        $this->definition = new FileDefinition(
             $this->label,
             $this->description,
             $this->default,
@@ -48,7 +52,7 @@ class StringDefinitionTest extends TestCase
 
     public function testDefinition()
     {
-        $this->assertEquals('string', $this->definition->definition());
+        $this->assertEquals('file', $this->definition->definition());
     }
 
     /**
@@ -60,7 +64,7 @@ class StringDefinitionTest extends TestCase
      */
     public function testValidateValue(bool $required, $value, bool $expected)
     {
-        $stringDefinition = new StringDefinition(
+        $stringDefinition = new FileDefinition(
             $this->label,
             $this->description,
             $this->default,
@@ -81,7 +85,7 @@ class StringDefinitionTest extends TestCase
             [
                 'required' => true,
                 'value' => 'notEmpty',
-                'expected' => true,
+                'expected' => false,
             ],
             [
                 'required' => true,
@@ -93,21 +97,31 @@ class StringDefinitionTest extends TestCase
                 'value' => [],
                 'expected' => false,
             ],
+            [
+                'required' => true,
+                'value' => 'http://example.com',
+                'expected' => true,
+            ],
 
             [
                 'required' => false,
                 'value' => '   ',
-                'expected' => true,
+                'expected' => false,
             ],
             [
                 'required' => false,
                 'value' => 'notEmpty',
-                'expected' => true,
+                'expected' => false,
             ],
             [
                 'required' => false,
                 'value' => 1,
                 'expected' => false,
+            ],
+            [
+                'required' => false,
+                'value' => 'http://example.com',
+                'expected' => true,
             ],
         ];
     }

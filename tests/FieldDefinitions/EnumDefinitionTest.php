@@ -27,7 +27,7 @@ class EnumDefinitionTest extends TestCase
     private $required;
 
     /** @var EnumDefinition */
-    private $enumDefinition;
+    private $definition;
 
     /**
      * @throws Exception
@@ -47,7 +47,7 @@ class EnumDefinitionTest extends TestCase
         $this->default = 'Test value for default param';
         $this->required = true;
 
-        $this->enumDefinition = new EnumDefinition(
+        $this->definition = new EnumDefinition(
             $this->label,
             $this->description,
             $this->enum,
@@ -77,12 +77,12 @@ class EnumDefinitionTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $this->enumDefinition->toArray('Field name'));
+        $this->assertEquals($expected, $this->definition->toArray('Field name'));
     }
 
     public function testDefinition()
     {
-        $this->assertEquals('enum', $this->enumDefinition->definition());
+        $this->assertEquals('enum', $this->definition->definition());
     }
 
     /**
