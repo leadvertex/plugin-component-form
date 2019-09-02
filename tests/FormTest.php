@@ -128,12 +128,14 @@ class FormTest extends TestCase
     public function testValidateData()
     {
         $this->assertFalse($this->form->validateData(new FormData([
-            'main' => [],
-            'additional' => [],
-            'extra' => [],
+            'main' => [
+                'field_1' => 'hello world',
+                'field_2' => 'hello world',
+                'field_3' => '',
+            ],
         ])));
 
-        $this->assertFalse($this->form->validateData(new FormData([
+        $this->assertTrue($this->form->validateData(new FormData([
             'main' => [
                 'field_1' => 1,
                 'field_2' => 'hello world',

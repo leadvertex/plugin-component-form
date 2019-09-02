@@ -80,19 +80,10 @@ class Form
         return $this->groups;
     }
 
-    public function validateData(FormData $formData): bool
+    public function validateData(?FormData $formData): bool
     {
-        foreach ($formData as $groupName => $fields) {
-            if (!array_key_exists($groupName, $this->groups)) {
-                return false;
-            }
-
-            $group = $this->groups[$groupName];
-            foreach ($fields as $fieldName => $value) {
-                if (!array_key_exists($fieldName, $group->getFields())) {
-                    return false;
-                }
-            }
+        if (is_null($formData)) {
+            $formData = new FormData();
         }
 
         foreach ($this->groups as $groupName => $group) {
