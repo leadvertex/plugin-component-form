@@ -141,8 +141,8 @@ class Form
             'groups' => [],
         ];
 
-        foreach ($this->groups as $groupName => $fieldDefinition) {
-            $array['groups'][$groupName] = $fieldDefinition->toArray($groupName);
+        foreach ($this->groups as $groupName => $fieldGroup) {
+            $array['groups'][$groupName] = $fieldGroup->toArray($groupName);
         }
 
         return $array;
