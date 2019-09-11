@@ -19,6 +19,9 @@ class FormTest extends TestCase
     /** @var Form */
     private $form;
 
+    /** @var Form */
+    private $formNullData;
+
     /** @var I18nInterface */
     private $label;
 
@@ -60,6 +63,12 @@ class FormTest extends TestCase
         ];
 
         $this->form = new Form(
+            $this->label,
+            $this->description,
+            $this->fieldGroups
+        );
+
+        $this->formNullData = new Form(
             $this->label,
             $this->description,
             $this->fieldGroups
@@ -158,6 +167,8 @@ class FormTest extends TestCase
         ])));
 
         $this->assertTrue($this->form->validateData(new FormData([])));
+
+        $this->assertTrue($this->form->validateData(null));
     }
 
     public function testGetData()
@@ -172,6 +183,20 @@ class FormTest extends TestCase
                 'field_4' => 'hello kitty',
             ]
         ], $this->form->getData()->all());
+    }
+
+    public function testGetDataFromNull()
+    {
+        $this->assertEquals([
+            'main' => [
+                'field_1' => 1,
+                'field_2' => 'default value for test',
+            ],
+            'additional' => [
+                'field_3' => 3,
+                'field_4' => 'hello kitty',
+            ]
+        ], $this->formNullData->getData()->all());
     }
 
     public function testSetData()

@@ -104,6 +104,16 @@ class Form
      */
     public function getData(): FormData
     {
+        if (is_null($this->data)) {
+            $data = [];
+            foreach ($this->groups as $groupName => $group) {
+                foreach ($group->getFields() as $fieldName => $field) {
+                    $data[$groupName][$fieldName] = $field->getDefaultValue();
+                }
+            }
+            $this->data = new FormData($data);
+        }
+
         return $this->data;
     }
 
