@@ -9,15 +9,12 @@ namespace Leadvertex\Plugin\Components\Form;
 
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\BooleanDefinition;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\FieldDefinition;
-use Leadvertex\Plugin\Components\I18n\I18nInterface;
+use Leadvertex\Plugin\Components\Form\FieldDefinitions\IntegerDefinition;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
 class FieldGroupTest extends TestCase
 {
-
-    /** @var I18nInterface */
-    private $label;
 
     /** @var FieldDefinition[] */
     private $fields;
@@ -25,64 +22,55 @@ class FieldGroupTest extends TestCase
     /** @var FieldGroup */
     private $group;
 
+    /** @var FieldGroup */
+    private $groupNull;
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->label = new I18n('Main settings', 'Основные настройки');
-
         $this->fields = [
-            'use' => new BooleanDefinition(
-                new I18n('Use this format', 'Использовать этот формат'),
-                new I18n('Include this type in export', 'Включать этот тип в выгрузку'),
-                true,
-                false
+            'use' => new IntegerDefinition(
+                'Use this format',
+                'Include this type in export',
+                function () {},
+                10
             ),
             'printCaption' => new BooleanDefinition(
-                new I18n('Print caption', 'Печатать заголовок'),
-                new I18n('Print caption at first page', 'Печатает заголовок на первой странице'),
-                true,
+                'Print caption',
+                'Print caption at first page',
+                function () {},
                 false
             ),
         ];
 
-        $this->group = new FieldGroup($this->label, $this->fields);
+        $this->group = new FieldGroup('Main settings', 'Primary settings for this module', $this->fields);
+        $this->groupNull = new FieldGroup('Main settings', null, $this->fields);
     }
 
     public function testCreateWithNotFieldGroupType()
     {
         $this->expectException(TypeError::class);
-        new FieldGroup($this->label, [1, 2]);
+        new FieldGroup('title', null, [1, 2]);
     }
 
-    public function testGetLabel()
+    public function testGetTitle()
     {
-        $this->assertEquals($this->label, $this->group->getLabel());
+        $this->assertEquals('Main settings', $this->group->getTitle());
     }
 
-    public function testGetField()
+    public function testGetDescription()
     {
-        $this->assertEquals(
-            $this->fields['use'],
-            $this->group->getField('use')
-        );
+        $this->assertEquals('Primary settings for this module', $this->group->getDescription());
+    }
+
+    public function testGetNullDescription()
+    {
+        $this->assertNull($this->groupNull->getDescription());
     }
 
     public function testGetFields()
     {
         $this->assertEquals($this->fields, $this->group->getFields());
-    }
-
-    public function testToArray()
-    {
-        $this->assertEquals([
-            'name' => 'Field name',
-            'label' => $this->label->get(),
-            'fields' => [
-                'use' => $this->fields['use']->toArray('use'),
-                'printCaption' => $this->fields['printCaption']->toArray('printCaption'),
-            ],
-        ], $this->group->toArray('Field name'));
     }
 
 }

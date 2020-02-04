@@ -8,72 +8,78 @@
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 
-use Exception;
-use Leadvertex\Plugin\Components\I18n\I18nInterface;
-
 abstract class FieldDefinition
 {
 
-    protected $label = [];
-    protected $description = [];
+    /** @var string */
+    protected $title;
+
+    /** @var string|null*/
+    protected $description;
+
+    /** @var callable */
+    protected $validator;
+
+    /** @var null */
     protected $default;
-    protected $required;
 
     /**
      * ConfigDefinition constructor.
-     * @param I18nInterface $label
-     * @param I18nInterface $description
-     * @param string|int|float|bool|array|null $default value
-     * @param bool $required is this field required
-     * @throws Exception
+     * @param string $title
+     * @param string|null $description
+     * @param callable $validator
+     * @param null $default
      */
-    public function __construct(I18nInterface $label, I18nInterface $description, $default, bool $required)
+    public function __construct(string $title, ?string $description, callable $validator, $default = null)
     {
-        $this->label = $label;
+        $this->title = $title;
         $this->description = $description;
-        $this->default = $default;
-        $this->required = $required;
-    }
 
-        /**
-     * Value, witch will be used as default
-     * @return string|int|float|bool|array|null
-     */
-    public function getDefaultValue()
-    {
-        return $this->default;
+        $this->validator = $validator;
+        $this->default = $default;
     }
 
     /**
-     * Does this field will be required
-     * @return bool
+     * @return string
      */
-    public function isRequired(): bool
+    public function getTitle(): string
     {
-        return $this->required;
+        return $this->title;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param $value
+     * @return bool errors
+     */
+    public function validate($value): bool
+    {
+        return empty(($this->validator)($value));
+    }
+
+    public function getErrors($value): array
+    {
+        return ($this->validator)($value);
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getDefault()
+    {
+        return $this->default;
     }
 
     /**
      * @return string
      */
     abstract public function definition(): string;
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    abstract public function validateValue($value): bool;
-
-    public function toArray(string $name): array
-    {
-        return [
-            'name' => $name,
-            'definition' => $this->definition(),
-            'label' => $this->label->get(),
-            'description' => $this->description->get(),
-            'default' => $this->default,
-            'required' => (bool) $this->required,
-        ];
-    }
 
 }

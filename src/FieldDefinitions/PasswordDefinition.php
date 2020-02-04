@@ -8,16 +8,8 @@
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 
-use Leadvertex\Plugin\Components\I18n\I18nInterface;
-
 class PasswordDefinition extends FieldDefinition
 {
-
-    public function __construct(I18nInterface $label, I18nInterface $description, $default, bool $required)
-    {
-        $default = (string) $default;
-        parent::__construct($label, $description, $default, $required);
-    }
 
     /**
      * @return string
@@ -27,21 +19,4 @@ class PasswordDefinition extends FieldDefinition
         return 'password';
     }
 
-    /**
-     * @param string $value
-     * @return bool
-     */
-    public function validateValue($value): bool
-    {
-        if (is_string($value)) {
-            $value = trim($value);
-        }
-
-        $isEmpty = is_null($value) || (is_string($value) && empty($value));
-        if ($this->isRequired() && $isEmpty) {
-            return false;
-        }
-
-        return is_string($value);
-    }
 }

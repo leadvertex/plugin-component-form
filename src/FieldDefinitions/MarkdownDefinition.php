@@ -8,13 +8,13 @@
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 
-class TextDefinition extends StringDefinition
+class MarkdownDefinition extends StringDefinition
 {
     /**
      * @return string
      */
     public function definition(): string
     {
-        return 'text';
+        return 'markdown';
     }
 }

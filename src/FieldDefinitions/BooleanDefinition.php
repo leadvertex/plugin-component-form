@@ -18,13 +18,4 @@ class BooleanDefinition extends FieldDefinition
     {
         return 'boolean';
     }
-
-    /**
-     * @param bool $value
-     * @return bool
-     */
-    public function validateValue($value): bool
-    {
-        return is_bool($value) && ($this->required === false || $value === true);
-    }
 }

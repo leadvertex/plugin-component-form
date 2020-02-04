@@ -8,33 +8,32 @@
 namespace Leadvertex\Plugin\Components\Form;
 
 
-use Leadvertex\Plugin\Components\I18n\I18nInterface;
 use TypeError;
 
 class Form
 {
 
-    /** @var I18nInterface  */
-    protected $name;
+    /** @var string */
+    protected $title;
 
-    /** @var I18nInterface  */
+    /** @var string|null*/
     protected $description;
 
     /** @var FieldGroup[] */
     protected $groups = [];
 
     /** @var FormData */
-    protected $data;
+    private $data;
 
     /**
      * Scheme constructor.
-     * @param I18nInterface $name
-     * @param I18nInterface $description
+     * @param string $title
+     * @param string|null $description
      * @param FieldGroup[] $fieldGroups
      */
-    public function __construct(I18nInterface $name, I18nInterface $description, array $fieldGroups)
+    public function __construct(string $title, ?string $description, array $fieldGroups)
     {
-        $this->name = $name;
+        $this->title = $title;
         $this->description = $description;
 
         foreach ($fieldGroups as $groupName => $fieldsGroup) {
@@ -46,30 +45,19 @@ class Form
     }
 
     /**
-     * Return property name in passed language. If passed language was not defined, will return name in default language
-     * @return I18nInterface
+     * @return string
      */
-    public function getName(): I18nInterface
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
-     * Return property description in passed language. If passed language was not defined, will return description in default language
-     * @return I18nInterface
+     * @return string|null
      */
-    public function getDescription(): I18nInterface
+    public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    /**
-     * @param string $name
-     * @return FieldGroup
-     */
-    public function getGroup(string $name): FieldGroup
-    {
-        return $this->groups[$name];
     }
 
     /**
@@ -78,25 +66,6 @@ class Form
     public function getGroups(): array
     {
         return $this->groups;
-    }
-
-    public function validateData(?FormData $formData): bool
-    {
-        if (is_null($formData)) {
-            $formData = new FormData();
-        }
-
-        foreach ($this->groups as $groupName => $group) {
-            foreach ($group->getFields() as $fieldName => $field) {
-                $path = "{$groupName}.{$fieldName}";
-                $value = $formData->get($path, $field->getDefaultValue());
-                if (!$field->validateValue($value)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -108,7 +77,7 @@ class Form
             $data = [];
             foreach ($this->groups as $groupName => $group) {
                 foreach ($group->getFields() as $fieldName => $field) {
-                    $data[$groupName][$fieldName] = $field->getDefaultValue();
+                    $data[$groupName][$fieldName] = $field->getDefault();
                 }
             }
             $this->data = new FormData($data);
@@ -119,43 +88,49 @@ class Form
 
     /**
      * @param FormData $formData
-     * @return bool
      */
-    public function setData(FormData $formData): bool
+    public function setData(FormData $formData)
     {
-        if (!$this->validateData($formData)) {
-            return false;
-        }
-
         foreach ($this->groups as $groupName => $group) {
             foreach ($group->getFields() as $fieldName => $field) {
                 $path = "{$groupName}.{$fieldName}";
                 if (!$formData->has($path)) {
-                    $formData->set($path, $field->getDefaultValue());
+                    $formData->set($path, $field->getDefault());
                 }
             }
         }
 
         $this->data = $formData;
+    }
+
+    public function validateData(FormData $formData): bool
+    {
+        foreach ($this->groups as $groupName => $group) {
+            foreach ($group->getFields() as $fieldName => $field) {
+                $path = "{$groupName}.{$fieldName}";
+                $value = $formData->get($path, $field->getDefault());
+                if (!$field->validate($value)) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
-    /**
-     * @return array
-     */
-    public function toArray(): array
+    public function getErrors(FormData $formData): array
     {
-        $array = [
-            'name' => $this->name->get(),
-            'description' => $this->description->get(),
-            'groups' => [],
-        ];
-
-        foreach ($this->groups as $groupName => $fieldGroup) {
-            $array['groups'][$groupName] = $fieldGroup->toArray($groupName);
+        $errors = [];
+        foreach ($this->groups as $groupName => $group) {
+            foreach ($group->getFields() as $fieldName => $field) {
+                $path = "{$groupName}.{$fieldName}";
+                $value = $formData->get($path, $field->getDefault());
+                $error = $field->getErrors($value);
+                if (!empty($error)) {
+                    $errors[$groupName][$fieldName] = $error;
+                }
+            }
         }
-
-        return $array;
+        return $errors;
     }
 
 }

@@ -9,16 +9,16 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 use Leadvertex\Plugin\Components\Form\FieldDefinitionTestCase;
 
-class IntegerDefinitionTest extends FieldDefinitionTestCase
+class MarkdownDefinitionTest extends FieldDefinitionTestCase
 {
 
     protected function getClass(): string
     {
-        return IntegerDefinition::class;
+        return MarkdownDefinition::class;
     }
 
     protected function getDefinitionString(): string
     {
-        return 'integer';
+        return 'markdown';
     }
 }

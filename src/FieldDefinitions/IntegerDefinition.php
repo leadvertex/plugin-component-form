@@ -7,17 +7,8 @@
 
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
-
-use Leadvertex\Plugin\Components\I18n\I18nInterface;
-
 class IntegerDefinition extends FieldDefinition
 {
-
-    public function __construct(I18nInterface $label, I18nInterface $description, $default, bool $required)
-    {
-        $default = (int) $default;
-        parent::__construct($label, $description, $default, $required);
-    }
 
     /**
      * @return string
@@ -27,16 +18,4 @@ class IntegerDefinition extends FieldDefinition
         return 'integer';
     }
 
-    /**
-     * @param int $value
-     * @return bool
-     */
-    public function validateValue($value): bool
-    {
-        if (!$this->isRequired() && is_null($value)) {
-            return true;
-        }
-
-        return is_int($value);
-    }
 }

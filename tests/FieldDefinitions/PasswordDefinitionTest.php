@@ -1,120 +1,24 @@
 <?php
 /**
- * Created for plugin-form
- * Datetime: 17.07.2019 13:32
- * @author Timur Kasumov aka XAKEPEHOK
+ * Created for plugin-component-form
+ * Date: 04.02.2020
+ * @author Timur Kasumov (XAKEPEHOK)
  */
 
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
-use Exception;
-use Leadvertex\Plugin\Components\Form\I18n;
-use Leadvertex\Plugin\Components\I18n\I18nInterface;
-use PHPUnit\Framework\TestCase;
+use Leadvertex\Plugin\Components\Form\FieldDefinitionTestCase;
 
-class PasswordDefinitionTest extends TestCase
+class PasswordDefinitionTest extends FieldDefinitionTestCase
 {
 
-    /** @var I18nInterface */
-    private $label;
-
-    /** @var I18nInterface */
-    private $description;
-
-    /** @var string */
-    private $default;
-
-    /** @var bool */
-    private $required;
-
-    /** @var PasswordDefinition */
-    private $definition;
-
-    /**
-     * @throws Exception
-     */
-    protected function setUp(): void
+    protected function getClass(): string
     {
-        parent::setUp();
-        $this->label = new I18n('Password', 'Пароль');
-        $this->description = new I18n('Description', 'Описание');
-
-        $this->default = 'qwerty';
-        $this->required = true;
-
-        $this->definition = new PasswordDefinition(
-            $this->label,
-            $this->description,
-            $this->default,
-            $this->required
-        );
-
+        return PasswordDefinition::class;
     }
 
-    public function testDefinition()
+    protected function getDefinitionString(): string
     {
-        $this->assertEquals('password', $this->definition->definition());
+        return 'password';
     }
-
-    /**
-     * @dataProvider dataProviderForValidate
-     * @param bool $required
-     * @param string $value
-     * @param bool $expected
-     * @throws Exception
-     */
-    public function testValidateValue(bool $required, $value, bool $expected)
-    {
-        $stringDefinition = new PasswordDefinition(
-            $this->label,
-            $this->description,
-            $this->default,
-            $required
-        );
-
-        $this->assertEquals($expected, $stringDefinition->validateValue($value));
-    }
-
-    public function dataProviderForValidate()
-    {
-        return [
-            [
-                'required' => true,
-                'value' => '   ',
-                'expected' => false,
-            ],
-            [
-                'required' => true,
-                'value' => 'notEmpty',
-                'expected' => true,
-            ],
-            [
-                'required' => true,
-                'value' => 1,
-                'expected' => false,
-            ],
-            [
-                'required' => true,
-                'value' => [],
-                'expected' => false,
-            ],
-
-            [
-                'required' => false,
-                'value' => '   ',
-                'expected' => true,
-            ],
-            [
-                'required' => false,
-                'value' => 'notEmpty',
-                'expected' => true,
-            ],
-            [
-                'required' => false,
-                'value' => 1,
-                'expected' => false,
-            ],
-        ];
-    }
-
 }

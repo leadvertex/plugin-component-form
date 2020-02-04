@@ -9,29 +9,30 @@ namespace Leadvertex\Plugin\Components\Form;
 
 
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\FieldDefinition;
-use Leadvertex\Plugin\Components\I18n\I18nInterface;
 use TypeError;
 
 class FieldGroup
 {
 
-    /**
-     * @var I18nInterface
-     */
-    private $label;
-    /**
-     * @var FieldDefinition[]
-     */
-    private $fields;
+    /** @var string */
+    protected $title;
+
+    /** @var string|null*/
+    protected $description;
+
+    /** @var FieldDefinition[] */
+    protected $fields;
 
     /**
      * FieldsGroup constructor.
-     * @param I18nInterface $label
+     * @param string $title
+     * @param string|null $description
      * @param FieldDefinition[] $fields
      */
-    public function __construct(I18nInterface $label, array $fields)
+    public function __construct(string $title, ?string $description, array $fields)
     {
-        $this->label = $label;
+        $this->title = $title;
+        $this->description = $description;
 
         foreach ($fields as $name => $fieldsGroup) {
             if (!$fieldsGroup instanceof FieldDefinition) {
@@ -42,20 +43,19 @@ class FieldGroup
     }
 
     /**
-     * @return I18nInterface
+     * @return string
      */
-    public function getLabel(): I18nInterface
+    public function getTitle(): string
     {
-        return $this->label;
+        return $this->title;
     }
 
     /**
-     * @param string $name
-     * @return FieldDefinition
+     * @return string|null
      */
-    public function getField(string $name): FieldDefinition
+    public function getDescription(): ?string
     {
-        return $this->fields[$name];
+        return $this->description;
     }
 
     /**
@@ -64,20 +64,6 @@ class FieldGroup
     public function getFields(): array
     {
         return $this->fields;
-    }
-
-    public function toArray(string $name): array
-    {
-        $array = [
-            'name' => $name,
-            'label' => $this->label->get(),
-            'fields' => [],
-        ];
-        foreach ($this->getFields() as $fieldName => $fieldDefinition) {
-            $array['fields'][$fieldName] = $fieldDefinition->toArray($fieldName);
-        }
-
-        return $array;
     }
 
 }
