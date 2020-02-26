@@ -53,9 +53,21 @@ class ListOfEnumDefinition extends FieldDefinition
     /**
      * @return string
      */
-    public function definition(): string
+    public function getDefinition(): string
     {
         return 'listOfEnum';
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'definition' => $this->getDefinition(),
+            'default' => $this->getDefault(),
+            'limit' => $this->limit,
+            'values' => $this->values
+        ];
     }
 
 }

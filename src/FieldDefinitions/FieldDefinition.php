@@ -8,7 +8,9 @@
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 
-abstract class FieldDefinition
+use JsonSerializable;
+
+abstract class FieldDefinition implements JsonSerializable
 {
 
     /** @var string */
@@ -80,6 +82,16 @@ abstract class FieldDefinition
     /**
      * @return string
      */
-    abstract public function definition(): string;
+    abstract public function getDefinition(): string;
+
+    public function jsonSerialize()
+    {
+        return [
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'definition' => $this->getDefinition(),
+            'default' => $this->getDefault(),
+        ];
+    }
 
 }

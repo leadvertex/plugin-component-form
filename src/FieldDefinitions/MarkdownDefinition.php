@@ -13,7 +13,7 @@ class MarkdownDefinition extends StringDefinition
     /**
      * @return string
      */
-    public function definition(): string
+    public function getDefinition(): string
     {
         return 'markdown';
     }

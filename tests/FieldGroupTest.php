@@ -73,4 +73,14 @@ class FieldGroupTest extends TestCase
         $this->assertEquals($this->fields, $this->group->getFields());
     }
 
+    public function testJsonSerialize()
+    {
+        $data = json_decode(json_encode($this->group), true);
+        $this->assertEquals('Main settings', $data['title']);
+        $this->assertEquals('Primary settings for this module', $data['description']);
+        $this->assertCount(2, $data['fields']);
+        $this->assertArrayHasKey('use', $data['fields']);
+        $this->assertArrayHasKey('printCaption', $data['fields']);
+    }
+
 }

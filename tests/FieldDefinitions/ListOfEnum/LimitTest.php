@@ -29,4 +29,12 @@ class LimitTest extends TestCase
         $limit = new Limit(10, null);
         $this->assertNull($limit->getMax());
     }
+
+    public function testJsonSerialize()
+    {
+        $this->assertSame('null', json_encode(new Limit(null, null)));
+        $this->assertSame('{"min":null,"max":10}', json_encode(new Limit(null, 10)));
+        $this->assertSame('{"min":5,"max":null}', json_encode(new Limit(5, null)));
+        $this->assertSame('{"min":5,"max":10}', json_encode(new Limit(5, 10)));
+    }
 }

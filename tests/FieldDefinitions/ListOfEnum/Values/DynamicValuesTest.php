@@ -14,9 +14,18 @@ class DynamicValuesTest extends TestCase
 
     public function testGet()
     {
-        $url = 'https://example.com/';
-        $values = new DynamicValues($url);
-        $this->assertEquals($url, $values->get());
+        $uri = 'https://example.com/';
+        $values = new DynamicValues($uri);
+        $this->assertEquals($uri, $values->get());
+    }
+
+    public function testJsonSerialize()
+    {
+        $uri = 'example.com';
+        $this->assertSame(
+            "\"{$uri}\"",
+            json_encode(new DynamicValues($uri))
+        );
     }
 
 }

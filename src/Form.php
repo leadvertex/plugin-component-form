@@ -8,9 +8,10 @@
 namespace Leadvertex\Plugin\Components\Form;
 
 
+use JsonSerializable;
 use TypeError;
 
-class Form
+class Form implements JsonSerializable
 {
 
     /** @var string */
@@ -133,4 +134,12 @@ class Form
         return $errors;
     }
 
+    public function jsonSerialize()
+    {
+        return [
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'groups' => $this->getGroups(),
+        ];
+    }
 }

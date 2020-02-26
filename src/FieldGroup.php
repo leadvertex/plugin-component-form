@@ -8,10 +8,11 @@
 namespace Leadvertex\Plugin\Components\Form;
 
 
+use JsonSerializable;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\FieldDefinition;
 use TypeError;
 
-class FieldGroup
+class FieldGroup implements JsonSerializable
 {
 
     /** @var string */
@@ -66,4 +67,12 @@ class FieldGroup
         return $this->fields;
     }
 
+    public function jsonSerialize()
+    {
+        return [
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'fields' => $this->getFields(),
+        ];
+    }
 }

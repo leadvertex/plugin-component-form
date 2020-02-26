@@ -8,7 +8,9 @@
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum;
 
 
-class Limit
+use JsonSerializable;
+
+class Limit implements JsonSerializable
 {
 
     /**
@@ -42,4 +44,18 @@ class Limit
         return $this->max;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        if (is_null($this->min) && is_null($this->max)) {
+            return null;
+        }
+
+        return [
+            'min' => $this->min,
+            'max' => $this->max
+        ];
+    }
 }

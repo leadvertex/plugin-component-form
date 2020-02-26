@@ -42,6 +42,30 @@ class ListOfEnumDefinitionTest extends FieldDefinitionTestCase
         $this->assertSame($this->values, $this->definition->getValues());
     }
 
+    public function testJsonSerialize()
+    {
+        $this->assertSame(
+            json_encode([
+                'title' => 'My field',
+                'description' => 'My description',
+                'definition' => $this->getDefinitionString(),
+                'default' => 'My default value',
+                'limit' => [
+                    'min' => 1,
+                    'max' => 10
+                ],
+                'values' => [
+                    'group' => [
+                        '0' => 'zero',
+                        '1' => 'one',
+                        '2' => 'two',
+                    ]
+                ]
+            ]),
+            json_encode($this->definition)
+        );
+    }
+
     protected function getClass(): string
     {
         return ListOfEnumDefinition::class;
@@ -63,9 +87,11 @@ class ListOfEnumDefinitionTest extends FieldDefinitionTestCase
 
         $this->limit = new Limit(1, 10);
         $this->values = new StaticValues([
-            '0' => 'zero',
-            '1' => 'one',
-            '2' => 'two',
+            'group' => [
+                '0' => 'zero',
+                '1' => 'one',
+                '2' => 'two',
+            ]
         ]);
 
         $this->definition = new ListOfEnumDefinition(

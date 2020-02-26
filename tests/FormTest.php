@@ -249,5 +249,16 @@ class FormTest extends TestCase
     }
 
 
+    public function testJsonSerialize()
+    {
+        $data = json_decode(json_encode($this->form), true);
+        $this->assertEquals('Form_filled', $data['title']);
+        $this->assertEquals('Form_filled description', $data['description']);
+        $this->assertCount(2, $data['groups']);
+        $this->assertArrayHasKey('main', $data['groups']);
+        $this->assertArrayHasKey('additional', $data['groups']);
+    }
+
+
 
 }

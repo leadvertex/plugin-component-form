@@ -25,4 +25,9 @@ class DynamicValues implements ValuesListInterface
     {
         return $this->url;
     }
+
+    public function jsonSerialize()
+    {
+        return $this->get();
+    }
 }

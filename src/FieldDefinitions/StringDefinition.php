@@ -14,7 +14,7 @@ class StringDefinition extends FieldDefinition
     /**
      * @return string
      */
-    public function definition(): string
+    public function getDefinition(): string
     {
         return 'string';
     }

@@ -8,7 +8,9 @@
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values;
 
 
-interface ValuesListInterface
+use JsonSerializable;
+
+interface ValuesListInterface extends JsonSerializable
 {
 
     public function get();

@@ -59,7 +59,20 @@ abstract class FieldDefinitionTestCase extends TestCase
 
     public function testGetDefinition()
     {
-        $this->assertEquals($this->getDefinitionString(), $this->definition->definition());
+        $this->assertEquals($this->getDefinitionString(), $this->definition->getDefinition());
+    }
+
+    public function testJsonSerialize()
+    {
+        $this->assertSame(
+            json_encode([
+                'title' => 'My field',
+                'description' => 'My description',
+                'definition' => $this->getDefinitionString(),
+                'default' => 'My default value',
+            ]),
+            json_encode($this->definition)
+        );
     }
 
     abstract protected function getClass(): string;
