@@ -14,16 +14,16 @@ class DynamicValues implements ValuesListInterface
     /**
      * @var string
      */
-    private $url;
+    private $uri;
 
-    public function __construct(string $url)
+    public function __construct(string $uri)
     {
-        $this->url = $url;
+        $this->uri = $uri;
     }
 
     public function get()
     {
-        return $this->url;
+        return $this->uri;
     }
 
     public function jsonSerialize()
