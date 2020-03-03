@@ -63,12 +63,12 @@ abstract class FieldDefinition implements JsonSerializable
      */
     public function validate($value): bool
     {
-        return empty(($this->validator)($value));
+        return empty($this->getErrors($value));
     }
 
     public function getErrors($value): array
     {
-        return ($this->validator)($value);
+        return ($this->validator)($value, $this);
     }
 
     /**

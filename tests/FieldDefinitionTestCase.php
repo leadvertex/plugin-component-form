@@ -86,7 +86,7 @@ abstract class FieldDefinitionTestCase extends TestCase
         /** @var FieldDefinition $class */
         $class = $this->getClass();
 
-        $validator = function ($value) {
+        $validator = function ($value, $object) {
             if (!$value) {
                 return ['Invalid value passed'];
             }
