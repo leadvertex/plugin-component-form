@@ -11,6 +11,7 @@ use Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Limit;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values\StaticValues;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values\ValuesListInterface;
 use Leadvertex\Plugin\Components\Form\FieldDefinitionTestCase;
+use Leadvertex\Plugin\Components\Form\FormData;
 
 class ListOfEnumDefinitionTest extends FieldDefinitionTestCase
 {
@@ -78,6 +79,8 @@ class ListOfEnumDefinitionTest extends FieldDefinitionTestCase
 
     protected function setUp(): void
     {
+        $this->formData = new FormData([]);
+
         $validator = function ($value) {
             if (!$value) {
                 return ['Invalid value passed'];

@@ -20,6 +20,8 @@ abstract class FieldDefinitionTestCase extends TestCase
     /** @var FieldDefinition */
     protected $definitionNull;
 
+    protected $formData;
+
     public function testGetTitle()
     {
         $this->assertEquals('My field', $this->definition->getTitle());
@@ -37,14 +39,14 @@ abstract class FieldDefinitionTestCase extends TestCase
 
     public function testValidate()
     {
-        $this->assertTrue($this->definition->validate(true));
-        $this->assertFalse($this->definition->validate(false));
+        $this->assertTrue($this->definition->validate(true, $this->formData));
+        $this->assertFalse($this->definition->validate(false, $this->formData));
     }
 
     public function testGetErrors()
     {
-        $this->assertEquals([], $this->definition->getErrors(true));
-        $this->assertEquals(['Invalid value passed'], $this->definition->getErrors(false));
+        $this->assertEquals([], $this->definition->getErrors(true, $this->formData));
+        $this->assertEquals(['Invalid value passed'], $this->definition->getErrors(false, $this->formData));
     }
 
     public function testGetDefault()
@@ -83,10 +85,16 @@ abstract class FieldDefinitionTestCase extends TestCase
     {
         parent::setUp();
 
+        $this->formData = new FormData([]);
+
         /** @var FieldDefinition $class */
         $class = $this->getClass();
 
-        $validator = function ($value, $object) {
+        $validator = function ($value, $object, FormData $formData) {
+
+            $this->assertInstanceOf(FieldDefinition::class, $object);
+            $this->assertSame($this->formData, $formData);
+
             if (!$value) {
                 return ['Invalid value passed'];
             }

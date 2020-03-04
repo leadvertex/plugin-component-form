@@ -9,6 +9,7 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 
 use JsonSerializable;
+use Leadvertex\Plugin\Components\Form\FormData;
 
 abstract class FieldDefinition implements JsonSerializable
 {
@@ -59,16 +60,22 @@ abstract class FieldDefinition implements JsonSerializable
 
     /**
      * @param $value
+     * @param FormData $form
      * @return bool errors
      */
-    public function validate($value): bool
+    public function validate($value, FormData $form): bool
     {
-        return empty($this->getErrors($value));
+        return empty($this->getErrors($value, $form));
     }
 
-    public function getErrors($value): array
+    /**
+     * @param $value
+     * @param FormData $form
+     * @return array
+     */
+    public function getErrors($value, FormData $form): array
     {
-        return ($this->validator)($value, $this);
+        return ($this->validator)($value, $this, $form);
     }
 
     /**
