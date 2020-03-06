@@ -38,13 +38,23 @@ class StaticValues implements ValuesListInterface
     {
         foreach ($array as $values) {
             if (!is_array($values)) {
-                throw new InvalidArgumentException('Items has no groups', 1);
+                throw new InvalidArgumentException('No items info (title & group)', 1);
             }
 
-            foreach ($values as $value) {
-                if (!is_scalar($value)) {
-                    throw new InvalidArgumentException('Items has redundant nested level', 2);
-                }
+            if (!isset($values['title'])) {
+                throw new InvalidArgumentException('No item title', 2);
+            }
+
+            if (!isset($values['group'])) {
+                throw new InvalidArgumentException('No item group', 3);
+            }
+
+            if (!is_scalar($values['title'])) {
+                throw new InvalidArgumentException('Title is not scalar', 4);
+            }
+
+            if (!is_scalar($values['group'])) {
+                throw new InvalidArgumentException('Group is not scalar', 5);
             }
         }
     }

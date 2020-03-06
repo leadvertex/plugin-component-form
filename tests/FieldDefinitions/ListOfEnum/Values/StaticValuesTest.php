@@ -16,17 +16,24 @@ class StaticValuesTest extends TestCase
     public function testGet()
     {
         $data = [
-            'group' => [
-                '0' => 'zero',
-                '1' => 'one',
-                '2' => 'two',
+            '0' => [
+                'title' => 'zero',
+                'group' => 'group'
+            ],
+            '1' => [
+                'title' => 'one',
+                'group' => 'group'
+            ],
+            '2' => [
+                'title' => 'two',
+                'group' => 'group'
             ],
         ];
         $values = new StaticValues($data);
         $this->assertEquals($data, $values->get());
     }
 
-    public function testConstructWithoutGroups()
+    public function testConstructWithoutInfo()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1);
@@ -34,6 +41,52 @@ class StaticValuesTest extends TestCase
             '0' => 'zero',
             '1' => 'one',
             '2' => 'two',
+        ]);
+    }
+
+    public function testConstructWithoutTitle()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(2);
+        new StaticValues([
+            '0' => [
+                'group' => 'group'
+            ],
+        ]);
+    }
+
+    public function testConstructWithoutGroup()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(3);
+        new StaticValues([
+            '0' => [
+                'title' => 'title'
+            ],
+        ]);
+    }
+
+    public function testConstructWithNonScalarTitle()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(4);
+        new StaticValues([
+            '0' => [
+                'title' => [],
+                'group' => 'group'
+            ],
+        ]);
+    }
+
+    public function testConstructWithNonScalarGroup()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(5);
+        new StaticValues([
+            '0' => [
+                'title' => 'title',
+                'group' => []
+            ],
         ]);
     }
 

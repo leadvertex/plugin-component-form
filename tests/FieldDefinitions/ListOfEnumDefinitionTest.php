@@ -56,11 +56,18 @@ class ListOfEnumDefinitionTest extends FieldDefinitionTestCase
                     'max' => 10
                 ],
                 'values' => [
-                    'group' => [
-                        '0' => 'zero',
-                        '1' => 'one',
-                        '2' => 'two',
-                    ]
+                    '0' => [
+                        'title' => 'zero',
+                        'group' => 'group'
+                    ],
+                    '1' => [
+                        'title' => 'one',
+                        'group' => 'group'
+                    ],
+                    '2' => [
+                        'title' => 'two',
+                        'group' => 'group'
+                    ],
                 ]
             ]),
             json_encode($this->definition)
@@ -90,11 +97,18 @@ class ListOfEnumDefinitionTest extends FieldDefinitionTestCase
 
         $this->limit = new Limit(1, 10);
         $this->values = new StaticValues([
-            'group' => [
-                '0' => 'zero',
-                '1' => 'one',
-                '2' => 'two',
-            ]
+            '0' => [
+                'title' => 'zero',
+                'group' => 'group'
+            ],
+            '1' => [
+                'title' => 'one',
+                'group' => 'group'
+            ],
+            '2' => [
+                'title' => 'two',
+                'group' => 'group'
+            ],
         ]);
 
         $this->definition = new ListOfEnumDefinition(
