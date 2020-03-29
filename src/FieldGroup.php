@@ -22,7 +22,7 @@ class FieldGroup implements JsonSerializable
     protected $description;
 
     /** @var FieldDefinition[] */
-    protected $fields;
+    protected $fields = [];
 
     /**
      * FieldsGroup constructor.
