@@ -80,7 +80,8 @@ class FormTest extends TestCase
         $this->form = new Form(
             'Form_filled',
             'Form_filled description',
-            $this->fieldGroups
+            $this->fieldGroups,
+            'Save'
         );
 
         $this->formData = new FormData([
@@ -95,7 +96,8 @@ class FormTest extends TestCase
         $this->formNullData = new Form(
             'Form_null',
             null,
-            $this->fieldGroups
+            $this->fieldGroups,
+            'Save'
         );
     }
 
@@ -106,7 +108,8 @@ class FormTest extends TestCase
         new Form(
             'Form_filled',
             'Form_filled description',
-            $fieldGroups
+            $fieldGroups,
+            'Save'
         );
     }
 
@@ -134,6 +137,11 @@ class FormTest extends TestCase
     public function testGetGroups()
     {
         $this->assertEquals($this->fieldGroups, $this->form->getGroups());
+    }
+
+    public function testGetButton()
+    {
+        $this->assertEquals('Save', $this->form->getButton());
     }
 
     public function testGetData()
@@ -257,6 +265,7 @@ class FormTest extends TestCase
         $this->assertCount(2, $data['groups']);
         $this->assertArrayHasKey('main', $data['groups']);
         $this->assertArrayHasKey('additional', $data['groups']);
+        $this->assertEquals('Save', $data['button']);
     }
 
 

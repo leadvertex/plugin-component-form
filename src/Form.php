@@ -25,14 +25,19 @@ class Form implements JsonSerializable
 
     /** @var FormData */
     private $data;
+    /**
+     * @var string
+     */
+    private $button;
 
     /**
      * Scheme constructor.
      * @param string $title
      * @param string|null $description
      * @param FieldGroup[] $fieldGroups
+     * @param string $button
      */
-    public function __construct(string $title, ?string $description, array $fieldGroups)
+    public function __construct(string $title, ?string $description, array $fieldGroups, string $button)
     {
         $this->title = $title;
         $this->description = $description;
@@ -51,6 +56,8 @@ class Form implements JsonSerializable
             }
         }
         $this->data = new FormData($data);
+
+        $this->button = $button;
     }
 
     /**
@@ -75,6 +82,14 @@ class Form implements JsonSerializable
     public function getGroups(): array
     {
         return $this->groups;
+    }
+
+    /**
+     * @return string
+     */
+    public function getButton(): string
+    {
+        return $this->button;
     }
 
     /**
@@ -136,6 +151,7 @@ class Form implements JsonSerializable
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'groups' => $this->getGroups(),
+            'button' => $this->getButton(),
         ];
     }
 }
