@@ -23,11 +23,7 @@ class Form implements JsonSerializable
     /** @var FieldGroup[] */
     protected $groups = [];
 
-    /** @var FormData */
-    private $data;
-    /**
-     * @var string
-     */
+    /** @var string */
     private $button;
 
     /**
@@ -48,14 +44,6 @@ class Form implements JsonSerializable
             }
             $this->groups[$groupName] = $fieldsGroup;
         }
-
-        $data = [];
-        foreach ($this->groups as $groupName => $group) {
-            foreach ($group->getFields() as $fieldName => $field) {
-                $data[$groupName][$fieldName] = $field->getDefault();
-            }
-        }
-        $this->data = new FormData($data);
 
         $this->button = $button;
     }
@@ -95,24 +83,15 @@ class Form implements JsonSerializable
     /**
      * @return FormData
      */
-    public function getData(): FormData
+    public function getDefaultData(): FormData
     {
-        return $this->data;
-    }
-
-    /**
-     * @param FormData $formData
-     */
-    public function setData(FormData $formData)
-    {
+        $data = [];
         foreach ($this->groups as $groupName => $group) {
             foreach ($group->getFields() as $fieldName => $field) {
-                $path = "{$groupName}.{$fieldName}";
-                if ($formData->has($path)) {
-                    $this->data->set($path, $formData->get($path));
-                }
+                $data[$groupName][$fieldName] = $field->getDefault();
             }
         }
+        return new FormData($data);
     }
 
     public function validateData(FormData $formData): bool

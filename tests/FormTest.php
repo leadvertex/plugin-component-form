@@ -91,8 +91,6 @@ class FormTest extends TestCase
             ]
         ]);
 
-        $this->form->setData($this->formData);
-
         $this->formNullData = new Form(
             'Form_null',
             null,
@@ -144,21 +142,7 @@ class FormTest extends TestCase
         $this->assertEquals('Save', $this->form->getButton());
     }
 
-    public function testGetData()
-    {
-        $this->assertEquals([
-            'main' => [
-                'field_1' => 100,
-                'field_2' => 'hello world',
-            ],
-            'additional' => [
-                'field_3' => 13,
-                'field_4' => 'Hello 4',
-            ]
-        ], $this->form->getData()->all());
-    }
-
-    public function testGetDataFromNull()
+    public function testGetDefaultData()
     {
         $this->assertEquals([
             'main' => [
@@ -169,24 +153,7 @@ class FormTest extends TestCase
                 'field_3' => 13,
                 'field_4' => 'Hello 4',
             ]
-        ], $this->formNullData->getData()->all());
-    }
-
-    public function testSetData()
-    {
-        $data = new FormData([
-            'main' => [
-                'field_1' => 111,
-                'field_2' => 'hello 222',
-            ],
-            'additional' => [
-                'field_3' => 333,
-                'field_4' => 'Hello 444',
-            ]
-        ]);
-
-        $this->form->setData($data);
-        $this->assertEquals($data, $this->form->getData());
+        ], $this->form->getDefaultData()->all());
     }
 
     public function testValidateData()
