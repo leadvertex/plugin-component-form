@@ -21,9 +21,6 @@ class FormTest extends TestCase
     /** @var Form */
     private $formNullData;
 
-    /** @var FormData */
-    private $formData;
-
     /**
      * @throws Exception
      */
@@ -36,12 +33,15 @@ class FormTest extends TestCase
                 'Main settings for this module',
                 [
                     'field_1' => new IntegerDefinition('Field 1', 'Description 1', function ($value) {
-                        if ($value < 0) {
-                            return [
-                                'Value should not be negative'
-                            ];
+                        $errors = [];
+                        if (is_null($value)) {
+                            $errors[] = 'Value should not be null';
+                            return $errors;
                         }
-                        return [];
+                        if ($value < 0) {
+                            $errors[] = 'Value should not be negative';
+                        }
+                        return $errors;
                     }, 10),
                     'field_2' => new StringDefinition('Field 2', 'Description 2', function ($value) {
                         if (empty($value)) {
@@ -83,13 +83,6 @@ class FormTest extends TestCase
             $this->fieldGroups,
             'Save'
         );
-
-        $this->formData = new FormData([
-            'main' => [
-                'field_1' => 100,
-                'field_2' => 'hello world',
-            ]
-        ]);
 
         $this->formNullData = new Form(
             'Form_null',
@@ -170,6 +163,10 @@ class FormTest extends TestCase
                 'field_1' => 1,
                 'field_2' => 'hello world',
             ],
+            'additional' => [
+                'field_3' => 13,
+                'field_4' => 'Hello 4',
+            ],
         ])));
 
         $this->assertFalse($this->form->validateData(new FormData([
@@ -179,19 +176,20 @@ class FormTest extends TestCase
             ],
         ])));
 
-        $this->assertTrue($this->form->validateData(new FormData([
-            'main' => [
-                'field_1' => 1,
-                'field_2' => 'hello world',
-            ],
-        ])));
-
-        $this->assertTrue($this->form->validateData(new FormData([])));
+        $this->assertFalse($this->form->validateData(new FormData([])));
     }
 
     public function testGetErrors()
     {
-        $this->assertEquals([], $this->form->getErrors(new FormData([])));
+        $this->assertEquals([
+            'main' => [
+                'field_1' => ['Value should not be null'],
+                'field_2' => ['String should not be empty'],
+            ],
+            'additional' => [
+                'field_4' => ['String should not be empty'],
+            ],
+        ], $this->form->getErrors(new FormData([])));
 
         $data = new FormData(['main' => [
             'field_1' => -10,
@@ -203,7 +201,10 @@ class FormTest extends TestCase
                 'field_1' => [
                     'Value should not be negative'
                 ],
-            ]
+            ],
+            'additional' => [
+                'field_4' => ['String should not be empty'],
+            ],
         ], $this->form->getErrors($data));
 
         $data = new FormData(['main' => [
@@ -219,7 +220,10 @@ class FormTest extends TestCase
                 'field_2' => [
                     'String should not be empty'
                 ],
-            ]
+            ],
+            'additional' => [
+                'field_4' => ['String should not be empty'],
+            ],
         ], $this->form->getErrors($data));
     }
 

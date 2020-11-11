@@ -99,7 +99,7 @@ class Form implements JsonSerializable
         foreach ($this->groups as $groupName => $group) {
             foreach ($group->getFields() as $fieldName => $field) {
                 $path = "{$groupName}.{$fieldName}";
-                $value = $formData->get($path, $field->getDefault());
+                $value = $formData->get($path);
                 if (!$field->validate($value, $formData)) {
                     return false;
                 }
@@ -114,7 +114,7 @@ class Form implements JsonSerializable
         foreach ($this->groups as $groupName => $group) {
             foreach ($group->getFields() as $fieldName => $field) {
                 $path = "{$groupName}.{$fieldName}";
-                $value = $formData->get($path, $field->getDefault());
+                $value = $formData->get($path);
                 $error = $field->getErrors($value, $formData);
                 if (!empty($error)) {
                     $errors[$groupName][$fieldName] = $error;
