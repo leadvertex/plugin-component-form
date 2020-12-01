@@ -1,7 +1,9 @@
 # Что такое plugin-component-form?
 
 `plugin-component-form` - это компонент для простого создания собственных форм, может использоваться при разработке плагинов для CRM Leadvertex.
+
 Подробнее о [плагинах](https://github.com/leadvertex/plugin-docs-internal). //TODO
+
 Подробнее о [формах](https://github.com/leadvertex/plugin-docs-internal/blob/master/forms.md). //TODO
 
 ## Установка
