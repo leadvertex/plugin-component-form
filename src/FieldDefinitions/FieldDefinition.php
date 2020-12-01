@@ -14,16 +14,14 @@ use Leadvertex\Plugin\Components\Form\FormData;
 abstract class FieldDefinition implements JsonSerializable
 {
 
-    /** @var string */
-    protected $title;
+    protected string $title;
 
-    /** @var string|null*/
-    protected $description;
+    protected ?string $description;
 
     /** @var callable */
     protected $validator;
 
-    /** @var null */
+    /** @var mixed|null */
     protected $default;
 
     /**
@@ -42,37 +40,21 @@ abstract class FieldDefinition implements JsonSerializable
         $this->default = $default;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param $value
-     * @param FormData $data
-     * @return bool errors
-     */
     public function validate($value, FormData $data): bool
     {
         return empty($this->getErrors($value, $data));
     }
 
-    /**
-     * @param $value
-     * @param FormData $data
-     * @return array
-     */
     public function getErrors($value, FormData $data): array
     {
         return ($this->validator)($value, $this, $data);
@@ -86,9 +68,6 @@ abstract class FieldDefinition implements JsonSerializable
         return $this->default;
     }
 
-    /**
-     * @return string
-     */
     abstract public function getDefinition(): string;
 
     public function jsonSerialize()

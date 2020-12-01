@@ -15,14 +15,12 @@ use TypeError;
 class FieldGroup implements JsonSerializable
 {
 
-    /** @var string */
-    protected $title;
+    protected string $title;
 
-    /** @var string|null*/
-    protected $description;
+    protected ?string $description;
 
     /** @var FieldDefinition[] */
-    protected $fields = [];
+    protected array $fields = [];
 
     /**
      * FieldsGroup constructor.
@@ -43,25 +41,16 @@ class FieldGroup implements JsonSerializable
         }
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @return FieldDefinition[]
-     */
     public function getFields(): array
     {
         return $this->fields;

@@ -10,9 +10,7 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 class MarkdownDefinition extends StringDefinition
 {
-    /**
-     * @return string
-     */
+
     public function getDefinition(): string
     {
         return 'markdown';

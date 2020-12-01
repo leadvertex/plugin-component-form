@@ -11,9 +11,6 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 class PasswordDefinition extends FieldDefinition
 {
 
-    /**
-     * @return string
-     */
     public function getDefinition(): string
     {
         return 'password';

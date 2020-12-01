@@ -11,17 +11,14 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values;
 class DynamicValues implements ValuesListInterface
 {
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
     public function __construct(string $url)
     {
         $this->url = $url;
     }
 
-    public function get()
+    public function get(): string
     {
         return $this->url;
     }

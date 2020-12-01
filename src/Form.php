@@ -8,60 +8,61 @@
 namespace Leadvertex\Plugin\Components\Form;
 
 
+use InvalidArgumentException;
 use JsonSerializable;
 use TypeError;
 
 class Form implements JsonSerializable
 {
 
-    /** @var string */
+    /** @var string|callable */
     protected $title;
 
-    /** @var string|null*/
+    /** @var string|callable|null*/
     protected $description;
 
-    /** @var FieldGroup[] */
+    /** @var FieldGroup[]|callable */
     protected $groups = [];
 
-    /** @var string */
+    /** @var string|callable */
     private $button;
 
     /**
      * Scheme constructor.
-     * @param string $title
-     * @param string|null $description
-     * @param FieldGroup[] $fieldGroups
-     * @param string $button
+     * @param string|callable $title
+     * @param string|callable|null $description
+     * @param FieldGroup[]|callable $fieldGroups
+     * @param string|callable $button
      */
-    public function __construct(string $title, ?string $description, array $fieldGroups, string $button)
+    public function __construct($title, $description, $fieldGroups, $button)
     {
         $this->title = $title;
         $this->description = $description;
 
-        foreach ($fieldGroups as $groupName => $fieldsGroup) {
-            if (!$fieldsGroup instanceof FieldGroup) {
-                throw new TypeError('Every item of $fieldsDefinitions should be instance of ' . FieldGroup::class);
+        if (is_array($fieldGroups)) {
+            foreach ($fieldGroups as $groupName => $fieldsGroup) {
+                if (!$fieldsGroup instanceof FieldGroup) {
+                    throw new TypeError('Every item of $fieldsDefinitions should be instance of ' . FieldGroup::class);
+                }
+                $this->groups[$groupName] = $fieldsGroup;
             }
-            $this->groups[$groupName] = $fieldsGroup;
+        } elseif (is_callable($fieldGroups)) {
+            $this->groups = $fieldGroups;
+        } else {
+            throw new InvalidArgumentException('Argument "$fieldGroups" should be array or callable');
         }
 
         $this->button = $button;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
-        return $this->title;
+        return is_callable($this->title) ? ($this->title)() : $this->title;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
-        return $this->description;
+        return is_callable($this->description) ? ($this->description)() : $this->description;
     }
 
     /**
@@ -69,24 +70,18 @@ class Form implements JsonSerializable
      */
     public function getGroups(): array
     {
-        return $this->groups;
+        return is_callable($this->groups) ? ($this->groups)() : $this->groups;
     }
 
-    /**
-     * @return string
-     */
     public function getButton(): string
     {
-        return $this->button;
+        return is_callable($this->button) ? ($this->button)() : $this->button;
     }
 
-    /**
-     * @return FormData
-     */
     public function getDefaultData(): FormData
     {
         $data = [];
-        foreach ($this->groups as $groupName => $group) {
+        foreach ($this->getGroups() as $groupName => $group) {
             foreach ($group->getFields() as $fieldName => $field) {
                 $data[$groupName][$fieldName] = $field->getDefault();
             }
@@ -96,7 +91,7 @@ class Form implements JsonSerializable
 
     public function validateData(FormData $formData): bool
     {
-        foreach ($this->groups as $groupName => $group) {
+        foreach ($this->getGroups() as $groupName => $group) {
             foreach ($group->getFields() as $fieldName => $field) {
                 $path = "{$groupName}.{$fieldName}";
                 $value = $formData->get($path);
@@ -111,7 +106,7 @@ class Form implements JsonSerializable
     public function getErrors(FormData $formData): array
     {
         $errors = [];
-        foreach ($this->groups as $groupName => $group) {
+        foreach ($this->getGroups() as $groupName => $group) {
             foreach ($group->getFields() as $fieldName => $field) {
                 $path = "{$groupName}.{$fieldName}";
                 $value = $formData->get($path);

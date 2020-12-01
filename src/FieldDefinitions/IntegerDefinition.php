@@ -10,9 +10,6 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 class IntegerDefinition extends FieldDefinition
 {
 
-    /**
-     * @return string
-     */
     public function getDefinition(): string
     {
         return 'integer';

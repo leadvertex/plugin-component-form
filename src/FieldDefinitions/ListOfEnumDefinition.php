@@ -14,11 +14,9 @@ use Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values\ValuesL
 class ListOfEnumDefinition extends FieldDefinition
 {
 
-    /** @var ValuesListInterface */
-    private $values;
+    private ValuesListInterface $values;
 
-    /** @var Limit|null */
-    private $limit;
+    private ?Limit $limit;
 
     public function __construct(
         string $title,
@@ -34,25 +32,17 @@ class ListOfEnumDefinition extends FieldDefinition
         $this->limit = $limit;
     }
 
-    /**
-     * @return Limit|null
-     */
     public function getLimit(): ?Limit
     {
         return $this->limit;
     }
 
-    /**
-     * @return ValuesListInterface
-     */
     public function getValues(): ValuesListInterface
     {
         return $this->values;
     }
 
-    /**
-     * @return string
-     */
+
     public function getDefinition(): string
     {
         return 'listOfEnum';
@@ -65,8 +55,8 @@ class ListOfEnumDefinition extends FieldDefinition
             'description' => $this->getDescription(),
             'definition' => $this->getDefinition(),
             'default' => $this->getDefault(),
-            'limit' => $this->limit,
-            'values' => $this->values
+            'limit' => $this->getLimit(),
+            'values' => $this->getValues()
         ];
     }
 

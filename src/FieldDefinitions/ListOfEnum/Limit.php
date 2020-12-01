@@ -13,14 +13,9 @@ use JsonSerializable;
 class Limit implements JsonSerializable
 {
 
-    /**
-     * @var int|null
-     */
-    private $min;
-    /**
-     * @var int|null
-     */
-    private $max;
+    private ?int $min;
+
+    private ?int $max;
 
     public function __construct(?int $min, ?int $max)
     {
@@ -28,34 +23,25 @@ class Limit implements JsonSerializable
         $this->max = $max;
     }
 
-    /**
-     * @return int|null
-     */
     public function getMin(): ?int
     {
         return $this->min;
     }
 
-    /**
-     * @return int|null
-     */
     public function getMax(): ?int
     {
         return $this->max;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function jsonSerialize()
     {
-        if (is_null($this->min) && is_null($this->max)) {
+        if (is_null($this->getMin()) && is_null($this->getMax())) {
             return null;
         }
 
         return [
-            'min' => $this->min,
-            'max' => $this->max
+            'min' => $this->getMin(),
+            'max' => $this->getMax()
         ];
     }
 }

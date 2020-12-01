@@ -13,10 +13,7 @@ use InvalidArgumentException;
 class StaticValues implements ValuesListInterface
 {
 
-    /**
-     * @var array
-     */
-    private $values;
+    private array $values;
 
     public function __construct(array $values)
     {
@@ -24,7 +21,7 @@ class StaticValues implements ValuesListInterface
         $this->values = $values;
     }
 
-    public function get()
+    public function get(): array
     {
         return $this->values;
     }

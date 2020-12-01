@@ -4,6 +4,7 @@ namespace Leadvertex\Plugin\Components\Form;
 
 
 use Exception;
+use InvalidArgumentException;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\IntegerDefinition;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\StringDefinition;
 use PHPUnit\Framework\TestCase;
@@ -13,13 +14,13 @@ class FormTest extends TestCase
 {
 
     /** @var FieldGroup[] */
-    private $fieldGroups;
+    private array $fieldGroups;
 
-    /** @var Form */
-    private $form;
+    private Form $form;
 
-    /** @var Form */
-    private $formNullData;
+    private Form $formNullData;
+
+    private Form $formCallable;
 
     /**
      * @throws Exception
@@ -90,6 +91,13 @@ class FormTest extends TestCase
             $this->fieldGroups,
             'Save'
         );
+
+        $this->formCallable = new Form(
+            function () { return 'Form_callable'; },
+            function () { return 'Form_callable description'; },
+            function () { return $this->fieldGroups; },
+            function () { return 'Form_callable button'; }
+        );
     }
 
     public function testCreateWithNotFieldGroupType()
@@ -104,11 +112,27 @@ class FormTest extends TestCase
         );
     }
 
+    public function testCreateWithNotFieldGroupCallableType()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Form(
+            'Form_filled',
+            'Form_filled description',
+            'string',
+            'Save'
+        );
+    }
+
     public function testGetTitle()
     {
         $this->assertEquals(
             'Form_filled',
             $this->form->getTitle()
+        );
+
+        $this->assertEquals(
+            'Form_callable',
+            $this->formCallable->getTitle()
         );
     }
 
@@ -117,6 +141,11 @@ class FormTest extends TestCase
         $this->assertEquals(
             'Form_filled description',
             $this->form->getDescription()
+        );
+
+        $this->assertEquals(
+            'Form_callable description',
+            $this->formCallable->getDescription()
         );
     }
 
@@ -128,11 +157,13 @@ class FormTest extends TestCase
     public function testGetGroups()
     {
         $this->assertEquals($this->fieldGroups, $this->form->getGroups());
+        $this->assertEquals($this->fieldGroups, $this->formCallable->getGroups());
     }
 
     public function testGetButton()
     {
         $this->assertEquals('Save', $this->form->getButton());
+        $this->assertEquals('Form_callable button', $this->formCallable->getButton());
     }
 
     public function testGetDefaultData()
@@ -147,6 +178,11 @@ class FormTest extends TestCase
                 'field_4' => 'Hello 4',
             ]
         ], $this->form->getDefaultData()->all());
+
+        $this->assertEquals(
+            $this->form->getDefaultData()->all(),
+            $this->formCallable->getDefaultData()->all(),
+        );
     }
 
     public function testValidateData()
@@ -177,6 +213,35 @@ class FormTest extends TestCase
         ])));
 
         $this->assertFalse($this->form->validateData(new FormData([])));
+
+        //Callable
+
+        $this->assertFalse($this->formCallable->validateData(new FormData([
+            'main' => [
+                'field_1' => -1,
+                'field_2' => 'hello world',
+            ],
+        ])));
+
+        $this->assertTrue($this->formCallable->validateData(new FormData([
+            'main' => [
+                'field_1' => 1,
+                'field_2' => 'hello world',
+            ],
+            'additional' => [
+                'field_3' => 13,
+                'field_4' => 'Hello 4',
+            ],
+        ])));
+
+        $this->assertFalse($this->formCallable->validateData(new FormData([
+            'main' => [
+                'field_1' => null,
+                'field_2' => null,
+            ],
+        ])));
+
+        $this->assertFalse($this->formCallable->validateData(new FormData([])));
     }
 
     public function testGetErrors()
@@ -190,6 +255,16 @@ class FormTest extends TestCase
                 'field_4' => ['String should not be empty'],
             ],
         ], $this->form->getErrors(new FormData([])));
+
+        $this->assertEquals([
+            'main' => [
+                'field_1' => ['Value should not be null'],
+                'field_2' => ['String should not be empty'],
+            ],
+            'additional' => [
+                'field_4' => ['String should not be empty'],
+            ],
+        ], $this->formCallable->getErrors(new FormData([])));
 
         $data = new FormData(['main' => [
             'field_1' => -10,
@@ -206,6 +281,17 @@ class FormTest extends TestCase
                 'field_4' => ['String should not be empty'],
             ],
         ], $this->form->getErrors($data));
+
+        $this->assertEquals([
+            'main' => [
+                'field_1' => [
+                    'Value should not be negative'
+                ],
+            ],
+            'additional' => [
+                'field_4' => ['String should not be empty'],
+            ],
+        ], $this->formCallable->getErrors($data));
 
         $data = new FormData(['main' => [
             'field_1' => -1,
@@ -225,6 +311,21 @@ class FormTest extends TestCase
                 'field_4' => ['String should not be empty'],
             ],
         ], $this->form->getErrors($data));
+
+
+        $this->assertEquals([
+            'main' => [
+                'field_1' => [
+                    'Value should not be negative'
+                ],
+                'field_2' => [
+                    'String should not be empty'
+                ],
+            ],
+            'additional' => [
+                'field_4' => ['String should not be empty'],
+            ],
+        ], $this->formCallable->getErrors($data));
     }
 
 
@@ -237,6 +338,14 @@ class FormTest extends TestCase
         $this->assertArrayHasKey('main', $data['groups']);
         $this->assertArrayHasKey('additional', $data['groups']);
         $this->assertEquals('Save', $data['button']);
+
+        $data = json_decode(json_encode($this->formCallable), true);
+        $this->assertEquals('Form_callable', $data['title']);
+        $this->assertEquals('Form_callable description', $data['description']);
+        $this->assertCount(2, $data['groups']);
+        $this->assertArrayHasKey('main', $data['groups']);
+        $this->assertArrayHasKey('additional', $data['groups']);
+        $this->assertEquals('Form_callable button', $data['button']);
     }
 
 
