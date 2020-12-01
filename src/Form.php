@@ -10,7 +10,6 @@ namespace Leadvertex\Plugin\Components\Form;
 
 use InvalidArgumentException;
 use JsonSerializable;
-use TypeError;
 
 class Form implements JsonSerializable
 {
@@ -39,18 +38,8 @@ class Form implements JsonSerializable
         $this->title = $title;
         $this->description = $description;
 
-        if (is_array($fieldGroups)) {
-            foreach ($fieldGroups as $groupName => $fieldsGroup) {
-                if (!$fieldsGroup instanceof FieldGroup) {
-                    throw new TypeError('Every item of $fieldsDefinitions should be instance of ' . FieldGroup::class);
-                }
-                $this->groups[$groupName] = $fieldsGroup;
-            }
-        } elseif (is_callable($fieldGroups)) {
-            $this->groups = $fieldGroups;
-        } else {
-            throw new InvalidArgumentException('Argument "$fieldGroups" should be array or callable');
-        }
+        $this->guardFieldGroup($fieldGroups);
+        $this->groups = $fieldGroups;
 
         $this->button = $button;
     }
@@ -70,7 +59,9 @@ class Form implements JsonSerializable
      */
     public function getGroups(): array
     {
-        return is_callable($this->groups) ? ($this->groups)() : $this->groups;
+        $groups = is_callable($this->groups) ? ($this->groups)() : $this->groups;
+        $this->guardFieldGroup($groups);
+        return $groups;
     }
 
     public function getButton(): string
@@ -127,5 +118,22 @@ class Form implements JsonSerializable
             'groups' => $this->getGroups(),
             'button' => $this->getButton(),
         ];
+    }
+
+    private function guardFieldGroup($fieldGroups): void
+    {
+        if (is_callable($fieldGroups)) {
+            return;
+        }
+
+        if (!is_array($fieldGroups)) {
+            throw new InvalidArgumentException('Argument $fieldGroups should be array of ' . FieldGroup::class);
+        }
+
+        foreach ($fieldGroups as $groupName => $fieldsGroup) {
+            if (!$fieldsGroup instanceof FieldGroup) {
+                throw new InvalidArgumentException('Every item of $fieldGroups should be instance of ' . FieldGroup::class);
+            }
+        }
     }
 }

@@ -8,7 +8,6 @@ use InvalidArgumentException;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\IntegerDefinition;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\StringDefinition;
 use PHPUnit\Framework\TestCase;
-use TypeError;
 
 class FormTest extends TestCase
 {
@@ -102,7 +101,7 @@ class FormTest extends TestCase
 
     public function testCreateWithNotFieldGroupType()
     {
-        $this->expectException(TypeError::class);
+        $this->expectException(InvalidArgumentException::class);
         $fieldGroups = [5, 10];
         new Form(
             'Form_filled',
