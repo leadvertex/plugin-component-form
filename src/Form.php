@@ -8,50 +8,51 @@
 namespace Leadvertex\Plugin\Components\Form;
 
 
-use InvalidArgumentException;
 use JsonSerializable;
+use TypeError;
 
 class Form implements JsonSerializable
 {
 
-    /** @var string|callable */
-    protected $title;
+    protected string $title;
 
-    /** @var string|callable|null*/
-    protected $description;
+    protected ?string $description;
 
-    /** @var FieldGroup[]|callable */
-    protected $groups = [];
+    /** @var FieldGroup[] */
+    protected array $groups = [];
 
-    /** @var string|callable */
-    private $button;
+    private string $button;
 
     /**
-     * Scheme constructor.
-     * @param string|callable $title
-     * @param string|callable|null $description
-     * @param FieldGroup[]|callable $fieldGroups
-     * @param string|callable $button
+     * Form constructor.
+     * @param string $title
+     * @param string|null $description
+     * @param FieldGroup[] $fieldGroups
+     * @param string $button
      */
-    public function __construct($title, $description, $fieldGroups, $button)
+    public function __construct(string $title, ?string $description, array $fieldGroups, string $button)
     {
         $this->title = $title;
         $this->description = $description;
 
-        $this->guardFieldGroup($fieldGroups);
-        $this->groups = $fieldGroups;
+        foreach ($fieldGroups as $groupName => $fieldsGroup) {
+            if (!$fieldsGroup instanceof FieldGroup) {
+                throw new TypeError('Every item of $fieldsDefinitions should be instance of ' . FieldGroup::class);
+            }
+            $this->groups[$groupName] = $fieldsGroup;
+        }
 
         $this->button = $button;
     }
 
     public function getTitle(): string
     {
-        return is_callable($this->title) ? ($this->title)() : $this->title;
+        return $this->title;
     }
 
     public function getDescription(): ?string
     {
-        return is_callable($this->description) ? ($this->description)() : $this->description;
+        return $this->description;
     }
 
     /**
@@ -59,14 +60,12 @@ class Form implements JsonSerializable
      */
     public function getGroups(): array
     {
-        $groups = is_callable($this->groups) ? ($this->groups)() : $this->groups;
-        $this->guardFieldGroup($groups);
-        return $groups;
+        return $this->groups;
     }
 
     public function getButton(): string
     {
-        return is_callable($this->button) ? ($this->button)() : $this->button;
+        return $this->button;
     }
 
     public function getDefaultData(): FormData
@@ -118,22 +117,5 @@ class Form implements JsonSerializable
             'groups' => $this->getGroups(),
             'button' => $this->getButton(),
         ];
-    }
-
-    private function guardFieldGroup($fieldGroups): void
-    {
-        if (is_callable($fieldGroups)) {
-            return;
-        }
-
-        if (!is_array($fieldGroups)) {
-            throw new InvalidArgumentException('Argument $fieldGroups should be array of ' . FieldGroup::class);
-        }
-
-        foreach ($fieldGroups as $groupName => $fieldsGroup) {
-            if (!$fieldsGroup instanceof FieldGroup) {
-                throw new InvalidArgumentException('Every item of $fieldGroups should be instance of ' . FieldGroup::class);
-            }
-        }
     }
 }
