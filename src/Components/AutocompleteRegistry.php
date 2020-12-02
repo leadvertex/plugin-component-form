@@ -23,11 +23,7 @@ final class AutocompleteRegistry
         self::$resolver = $resolver;
     }
 
-    /**
-     * @param string $name
-     * @return AutocompleteInterface
-     */
-    public static function getAutocomplete(string $name): AutocompleteInterface
+    public static function getAutocomplete(string $name): ?AutocompleteInterface
     {
         if (!isset(self::$resolver)) {
             throw new RuntimeException('Autocomplete registry was not configured');
