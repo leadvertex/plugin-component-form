@@ -8,7 +8,7 @@
 namespace Leadvertex\Plugin\Components\Form\Components;
 
 
-use RuntimeException;
+use Leadvertex\Plugin\Components\Form\Exceptions\AutocompleteRegistryException;
 
 final class AutocompleteRegistry
 {
@@ -23,10 +23,15 @@ final class AutocompleteRegistry
         self::$resolver = $resolver;
     }
 
+    /**
+     * @param string $name
+     * @return AutocompleteInterface|null
+     * @throws AutocompleteRegistryException
+     */
     public static function getAutocomplete(string $name): ?AutocompleteInterface
     {
         if (!isset(self::$resolver)) {
-            throw new RuntimeException('Autocomplete registry was not configured');
+            throw new AutocompleteRegistryException('Autocomplete registry was not configured', 100);
         }
 
         $resolver = self::$resolver;
