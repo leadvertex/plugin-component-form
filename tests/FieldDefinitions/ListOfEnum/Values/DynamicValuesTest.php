@@ -14,17 +14,17 @@ class DynamicValuesTest extends TestCase
 
     public function testGet()
     {
-        $uri = 'https://example.com/';
-        $values = new DynamicValues($uri);
-        $this->assertEquals($uri, $values->get());
+        $name = 'example';
+        $values = new DynamicValues($name);
+        $this->assertEquals($name, $values->get());
     }
 
     public function testJsonSerialize()
     {
-        $uri = 'example.com';
+        $name = 'example';
         $this->assertSame(
-            "\"{$uri}\"",
-            json_encode(new DynamicValues($uri))
+            "\"{$name}\"",
+            json_encode(new DynamicValues($name))
         );
     }
 
