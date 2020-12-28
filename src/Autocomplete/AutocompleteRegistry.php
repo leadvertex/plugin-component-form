@@ -5,7 +5,7 @@
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
-namespace Leadvertex\Plugin\Components\Form\Components;
+namespace Leadvertex\Plugin\Components\Form\Autocomplete;
 
 
 use Leadvertex\Plugin\Components\Form\Exceptions\AutocompleteRegistryException;
