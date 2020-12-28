@@ -8,6 +8,7 @@
 namespace Leadvertex\Plugin\Components\Form;
 
 
+use Leadvertex\Plugin\Components\Form\Components\Validator;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\FieldDefinition;
 use PHPUnit\Framework\TestCase;
 
@@ -19,6 +20,9 @@ abstract class FieldDefinitionTestCase extends TestCase
 
     /** @var FieldDefinition */
     protected $definitionNull;
+
+    /** @var FieldDefinition */
+    protected $definitionValidator;
 
     protected $formData;
 
@@ -41,12 +45,18 @@ abstract class FieldDefinitionTestCase extends TestCase
     {
         $this->assertTrue($this->definition->validate(true, $this->formData));
         $this->assertFalse($this->definition->validate(false, $this->formData));
+
+        $this->assertTrue($this->definitionValidator->validate(true, $this->formData));
+        $this->assertFalse($this->definitionValidator->validate(false, $this->formData));
     }
 
     public function testGetErrors()
     {
         $this->assertEquals([], $this->definition->getErrors(true, $this->formData));
         $this->assertEquals(['Invalid value passed'], $this->definition->getErrors(false, $this->formData));
+
+        $this->assertEquals([], $this->definitionValidator->getErrors(true, $this->formData));
+        $this->assertEquals(['Invalid value passed'], $this->definitionValidator->getErrors(false, $this->formData));
     }
 
     public function testGetDefault()
@@ -103,6 +113,7 @@ abstract class FieldDefinitionTestCase extends TestCase
 
         $this->definition = new $class('My field', 'My description', $validator, 'My default value');
         $this->definitionNull = new $class('My field', null, $validator, null);
+        $this->definitionValidator = new $class('My field', null, new Validator($validator), null);
     }
 
 }

@@ -7,6 +7,7 @@
 
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
+use Leadvertex\Plugin\Components\Form\Components\Validator;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Limit;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values\StaticValues;
 use Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values\ValuesListInterface;
@@ -124,6 +125,15 @@ class ListOfEnumDefinitionTest extends FieldDefinitionTestCase
             'My field',
             null,
             $validator,
+            $this->values,
+            null,
+            null
+        );
+
+        $this->definitionValidator = new ListOfEnumDefinition(
+            'My field',
+            null,
+            new Validator($validator),
             $this->values,
             null,
             null

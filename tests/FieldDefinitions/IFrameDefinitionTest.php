@@ -7,6 +7,7 @@
 
 namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
+use Leadvertex\Plugin\Components\Form\Components\Validator;
 use Leadvertex\Plugin\Components\Form\FieldDefinitionTestCase;
 use Leadvertex\Plugin\Components\Form\FormData;
 
@@ -37,6 +38,7 @@ class IFrameDefinitionTest extends FieldDefinitionTestCase
 
         $this->definition = new $class('My field', 'My description', $validator, $this->iframe, 'My default value');
         $this->definitionNull = new $class('My field', null, $validator, $this->iframe, null);
+        $this->definitionValidator = new $class('My field', null, new Validator($validator), $this->iframe, null);
     }
 
     protected function getClass(): string

@@ -9,6 +9,7 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions;
 
 
 use JsonSerializable;
+use Leadvertex\Plugin\Components\Form\Components\ValidatorInterface;
 use Leadvertex\Plugin\Components\Form\FormData;
 
 abstract class FieldDefinition implements JsonSerializable
@@ -28,7 +29,7 @@ abstract class FieldDefinition implements JsonSerializable
      * ConfigDefinition constructor.
      * @param string $title
      * @param string|null $description
-     * @param callable $validator
+     * @param ValidatorInterface|callable $validator
      * @param null $default
      */
     public function __construct(string $title, ?string $description, callable $validator, $default = null)
