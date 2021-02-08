@@ -1,7 +1,7 @@
 <?php
 /**
  * Created for plugin-component-form
- * Date: 04.02.2020
+ * Date: 08.02.2021
  * @author Timur Kasumov (XAKEPEHOK)
  */
 
@@ -10,7 +10,7 @@ namespace Leadvertex\Plugin\Components\Form\FieldDefinitions\ListOfEnum\Values;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-class StaticValuesTest extends TestCase
+class CallableValuesTest extends TestCase
 {
 
     public function testGet()
@@ -29,72 +29,74 @@ class StaticValuesTest extends TestCase
                 'group' => 'group'
             ],
         ];
-        $values = new StaticValues($data);
-        $this->assertEquals($data, $values->get());
+        $callable = fn() => $data;
+
+        $values = new CallableValues($callable);
+        $this->assertSame($data, $values->get());
     }
 
     public function testConstructWithInvalidAssoc()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1);
-        new StaticValues([
+        (new CallableValues(fn() => [
             '0' => 'zero',
             '1' => 'one',
             '2' => 'two',
-        ]);
+        ]))->get();
     }
 
     public function testConstructWithoutTitle()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(2);
-        new StaticValues([
+        (new CallableValues(fn() => [
             '0' => [
                 'group' => 'group'
             ],
-        ]);
+        ]))->get();
     }
 
     public function testConstructWithoutGroup()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(3);
-        new StaticValues([
+        (new CallableValues(fn() => [
             '0' => [
                 'title' => 'title'
             ],
-        ]);
+        ]))->get();
     }
 
     public function testConstructWithNonScalarTitle()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(4);
-        new StaticValues([
+        (new CallableValues(fn() => [
             '0' => [
                 'title' => [],
                 'group' => 'group'
             ],
-        ]);
+        ]))->get();
     }
 
     public function testConstructWithNonScalarGroup()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(5);
-        new StaticValues([
+        (new CallableValues(fn() => [
             '0' => [
                 'title' => 'title',
                 'group' => []
             ],
-        ]);
+        ]))->get();
     }
 
     public function testConstructWithRedundantLevel()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(2);
-        new StaticValues([
+        (new CallableValues(fn() => [
             '' => [
                 '0' => 'zero',
                 '1' => 'one',
@@ -104,7 +106,7 @@ class StaticValuesTest extends TestCase
                     '2' => 'two',
                 ],
             ],
-        ]);
+        ]))->get();
     }
 
 }
