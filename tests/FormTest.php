@@ -147,6 +147,37 @@ class FormTest extends TestCase
         ], $this->form->getDefaultData()->all());
     }
 
+    public function testClearRedundant()
+    {
+        $data = new FormData([
+            'main' => [
+                'field_1' => 10,
+                'field_2' => 'Hello',
+                'red_1' => 'redundant_field',
+            ],
+            'additional' => [
+                'field_3' => 13,
+                'field_4' => 'Hello 4',
+            ],
+            'red_group' => [
+                'field_5' => 20,
+                'field_6' => 'Hello world',
+            ],
+        ]);
+
+        $cleared = $this->form->clearRedundant($data);
+        $this->assertEquals([
+            'main' => [
+                'field_1' => 10,
+                'field_2' => 'Hello',
+            ],
+            'additional' => [
+                'field_3' => 13,
+                'field_4' => 'Hello 4',
+            ]
+        ], $cleared->all());
+    }
+
     public function testValidateData()
     {
         $this->assertFalse($this->form->validateData(new FormData([

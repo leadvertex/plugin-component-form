@@ -79,6 +79,32 @@ class Form implements JsonSerializable
         return new FormData($data);
     }
 
+    public function clearRedundant(FormData $formData): FormData
+    {
+        $dataGroupPath = [];
+        $dataFieldsPath = [];
+        foreach ($formData as $groupName => $fields) {
+            $dataGroupPath[$groupName] = $groupName;
+            foreach ($fields as $fieldName => $value) {
+                $dataFieldsPath[] = "{$groupName}.{$fieldName}";
+            }
+        }
+
+        $formGroupPath = [];
+        $formFieldsPath = [];
+        foreach ($this->getGroups() as $groupName => $group) {
+            $formGroupPath[$groupName] = $groupName;
+            foreach ($group->getFields() as $fieldName => $field) {
+                $formFieldsPath[] = "{$groupName}.{$fieldName}";
+            }
+        }
+
+        $result = clone $formData;
+        $result->delete(array_diff($dataFieldsPath, $formFieldsPath));
+        $result->delete(array_diff($dataGroupPath, $formGroupPath));
+        return $result;
+    }
+
     public function validateData(FormData $formData): bool
     {
         foreach ($this->getGroups() as $groupName => $group) {
